@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/categoryLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/category_new_title"
+        android:textColor="#0000A0"
+        android:textSize="20sp"
+        android:textStyle="bold" 
+        android:layout_gravity="center"/>
+
+	<View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:background="#0000ff" />
+    
+	<TableLayout 
+        android:layout_height="fill_parent" 
+		android:layout_width="fill_parent" >
+		<TableRow >
+		    <TextView 
+		        android:text="@string/add_name_label" 
+		        android:textColor="#000000"/>
+		    <EditText 
+		        android:id="@+id/category_name"
+		        android:inputType="text" 
+		        android:layout_width="match_parent" 
+		        android:layout_weight="1"/>
+		</TableRow>
+        <TableRow >
+            <Button 
+                android:id="@+id/add_category" 
+                android:text="@string/add_button" 
+                android:layout_weight="1"/>
+		</TableRow>
+	</TableLayout>
+        
+</LinearLayout>
