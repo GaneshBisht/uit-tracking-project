@@ -1,0 +1,5 @@
+D:\academic\vs2010\SampleDotNetWebService\SampleDotNetWebService\bin\SampleDotNetWebService.dll
+D:\academic\vs2010\SampleDotNetWebService\SampleDotNetWebService\bin\SampleDotNetWebService.pdb
+D:\academic\vs2010\SampleDotNetWebService\SampleDotNetWebService\obj\Debug\ResolveAssemblyReference.cache
+D:\academic\vs2010\SampleDotNetWebService\SampleDotNetWebService\obj\Debug\SampleDotNetWebService.dll
+D:\academic\vs2010\SampleDotNetWebService\SampleDotNetWebService\obj\Debug\SampleDotNetWebService.pdb
