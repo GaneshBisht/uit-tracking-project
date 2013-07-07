@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/resultItem"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/result_style"
+    >   
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
+        
+     	<TextView android:id="@+id/placeName"
+			android:textSize="22sp"
+			android:textStyle="bold"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="#000000"/>
+     	
+     	
+     	<TextView android:id="@+id/placeAddress"
+			android:textSize="16sp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="#000000"
+			android:layout_marginTop="10dp" />
+    
+     	<RatingBar 
+     	    android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="3dp"
+            android:id="@+id/result_rating"
+            android:isIndicator="false"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_marginBottom="5dp" />
+     	
+    </LinearLayout>
+	
+</RelativeLayout >
