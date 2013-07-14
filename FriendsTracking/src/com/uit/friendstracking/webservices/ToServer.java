@@ -35,10 +35,10 @@ public class ToServer {
 	static long lastSessionUpdate;
 
 	// The web service's url.
-	private static String URL = "http://118.68.162.37:2720/fflServer/services/FFLocationAPI";
+	private static String URL = "http://192.168.0.130:2720/fflServer/services/FFLocationAPI";
 
 	// The ip
-	private static String ip = "118.68.162.37";
+	private static String ip = "192.168.0.130";
 
 	// The namespace of the web service you want to access.
 	private static final String NAMESPACE = "http://controller";
