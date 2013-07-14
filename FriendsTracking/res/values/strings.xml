@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FriendsTracking</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="IP">118.68.162.37</string>
+    <string name="loading_title">Loading…</string>
+	<string name="loading_message">Loading… Please wait</string>
+
+</resources>
