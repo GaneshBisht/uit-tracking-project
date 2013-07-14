@@ -7,5 +7,7 @@
     <string name="IP">192.168.0.130</string>
     <string name="loading_title">Loading…</string>
 	<string name="loading_message">Loading… Please wait</string>
+	<string name="find_friend">Find a friend</string>
+	<string name="name">Name:</string>
 
 </resources>

@@ -1,8 +1,6 @@
 package com.uit.friendstracking;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,7 +9,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.uit.friendstracking.models.KUserInfo;
-import com.uit.friendstracking.webservices.ToServer;
+import com.uit.friendstracking.tasks.CheckExistAsyncTask;
+import com.uit.friendstracking.tasks.NewUserAsyncTask;
 
 public class Register extends Activity implements OnClickListener {
 
@@ -32,7 +31,6 @@ public class Register extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register);
 
-		// Fit the interface's buttons and EditTexts to local variables
 		m_btSave = (Button) findViewById(R.id.register_bSave);
 		m_btSave.setOnClickListener(this);
 
@@ -103,26 +101,25 @@ public class Register extends Activity implements OnClickListener {
 
 			else {
 
-				KUserInfo us = new KUserInfo();
-				us.setNick(nick);
-				us.setName(name);
-				us.setSurname(surname);
-				us.setEmail(email);
-				us.setPhone(Integer.parseInt(phone));
-				us.setCountry(country);
-				us.setAddress(address);
-				us.setAdministrator(false);
+				KUserInfo userInfo = new KUserInfo();
+				userInfo.setNick(nick);
+				userInfo.setName(name);
+				userInfo.setSurname(surname);
+				userInfo.setEmail(email);
+				userInfo.setPhone(Integer.parseInt(phone));
+				userInfo.setCountry(country);
+				userInfo.setAddress(address);
+				userInfo.setAdministrator(false);
 
 				try {
-					if (new CheckExistAsyncTask(nick).execute().get()) {
+					if (new CheckExistAsyncTask(this, nick).execute().get()) {
 						Toast.makeText(getApplicationContext(),
 								"The nick already exist. You have to change.",
 								Toast.LENGTH_LONG).show();
 					} else {
-						// Save the user
-						boolean succesfully = new NewUserAsyncTask(us, password).execute().get();
+						boolean succesfully = new NewUserAsyncTask(this, userInfo,
+								password).execute().get();
 
-						// If the user has been saved in the database
 						if (succesfully) {
 							Toast.makeText(getApplicationContext(),
 									"The user has been saved.",
@@ -145,71 +142,8 @@ public class Register extends Activity implements OnClickListener {
 
 			}
 		}
-		// If the user press the cancel button
 		else if (sourceButton == this.m_btCancel) {
 			this.finish();
-		}
-	}
-	
-	private class CheckExistAsyncTask extends AsyncTask<Void, Void, Boolean> {
-
-		private ProgressDialog m_progressDialog;
-		private String m_userName;
-
-		public CheckExistAsyncTask(String userName) {
-			m_userName = userName;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean result) {
-			m_progressDialog.dismiss();
-		}
-
-		@Override
-		protected void onPreExecute() {
-			m_progressDialog = ProgressDialog.show(Register.this, "Loading...",
-					"Data is Loading...");
-		}
-
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			try {
-				return ToServer.exists(m_userName);
-			} catch (Exception e) {
-				return false;
-			}
-		}
-	}
-	
-	private class NewUserAsyncTask extends AsyncTask<Void, Void, Boolean> {
-
-		private ProgressDialog m_progressDialog;
-		private KUserInfo m_user;
-		private String m_passWord;
-
-		public NewUserAsyncTask(KUserInfo user, String passWord) {
-			m_user = user;
-			m_passWord = passWord;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean result) {
-			m_progressDialog.dismiss();
-		}
-
-		@Override
-		protected void onPreExecute() {
-			m_progressDialog = ProgressDialog.show(Register.this, "Adding...",
-					"User is Adding...");
-		}
-
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			try {
-				return ToServer.newUser(m_user, m_passWord);
-			} catch (Exception e) {
-				return false;
-			}
 		}
 	}
 }

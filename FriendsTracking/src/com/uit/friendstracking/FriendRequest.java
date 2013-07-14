@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,7 +14,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.uit.friendstracking.models.KUserInfo;
-import com.uit.friendstracking.webservices.ToServer;
+import com.uit.friendstracking.tasks.AskFriendAsyncTask;
+import com.uit.friendstracking.tasks.GetRequestsAsyncTask;
 
 public class FriendRequest extends ListActivity implements OnClickListener {
 
@@ -32,7 +31,7 @@ public class FriendRequest extends ListActivity implements OnClickListener {
 
 		try {
 			// Get the friends requests.
-			m_listUsers = new GetRequestsAsyncTask().execute().get();
+			m_listUsers = new GetRequestsAsyncTask(this).execute().get();
 			String[] listItems = new String[m_listUsers.size()];
 			m_listToAdd = new ArrayList<Boolean>();
 
@@ -82,7 +81,8 @@ public class FriendRequest extends ListActivity implements OnClickListener {
 				if (m_listToAdd.get(i) == true) {
 					try {
 						// Ask for friend
-						if (!new AskFriendAsyncTask(m_listUsers.get(i).getId()).execute().get())
+						if (!new AskFriendAsyncTask(this, m_listUsers.get(i)
+								.getId()).execute().get())
 							fail = true;
 
 					} catch (Exception e) {
@@ -99,74 +99,9 @@ public class FriendRequest extends ListActivity implements OnClickListener {
 				Toast.makeText(getApplicationContext(),
 						"Failed while trying to save friends ",
 						Toast.LENGTH_LONG).show();
-
-			// Finish
 			this.finish();
-
-		}
-		// If the user press the button finish
-		else if (sourceButton == m_btCancel) {
+		} else if (sourceButton == m_btCancel) {
 			this.finish();
-		}
-
-	}
-
-	private class GetRequestsAsyncTask extends
-			AsyncTask<Void, Void, List<KUserInfo>> {
-
-		private ProgressDialog m_progressDialog;
-
-		public GetRequestsAsyncTask() {
-		}
-
-		@Override
-		protected void onPostExecute(List<KUserInfo> result) {
-			m_progressDialog.dismiss();
-		}
-
-		@Override
-		protected void onPreExecute() {
-			m_progressDialog = ProgressDialog.show(FriendRequest.this,
-					"Searching...", "System is Searching...");
-		}
-
-		@Override
-		protected List<KUserInfo> doInBackground(Void... params) {
-			try {
-				return ToServer.getRequests();
-			} catch (Exception e) {
-				return new ArrayList<KUserInfo>();
-			}
-		}
-	}
-
-	private class AskFriendAsyncTask extends AsyncTask<Void, Void, Boolean> {
-
-		private ProgressDialog m_progressDialog;
-		private int m_to;
-
-		public AskFriendAsyncTask(int to) {
-			m_to = to;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean result) {
-			m_progressDialog.dismiss();
-		}
-
-		@Override
-		protected void onPreExecute() {
-			m_progressDialog = ProgressDialog.show(FriendRequest.this,
-					"Searching...", "System is Searching...");
-		}
-
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			try {
-				return ToServer.askFriend(m_to);
-			} catch (Exception e) {
-				return false;
-			}
 		}
 	}
 }

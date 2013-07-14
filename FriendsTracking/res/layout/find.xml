@@ -11,8 +11,7 @@
             android:id="@+id/widget28"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Find a friend" />
-
+            android:text="@string/find_friend" />
     </LinearLayout>
 
     <LinearLayout
@@ -23,18 +22,17 @@
             android:id="@+id/labelName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name:" />
+            android:text="@string/name" />
 
         <EditText
             android:id="@+id/find_tName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10" >
 
             <requestFocus />
         </EditText>
-
     </LinearLayout>
 
     <LinearLayout
@@ -53,7 +51,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -72,7 +69,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -91,7 +87,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -109,7 +104,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel" />
-
     </LinearLayout>
 
 </LinearLayout>
