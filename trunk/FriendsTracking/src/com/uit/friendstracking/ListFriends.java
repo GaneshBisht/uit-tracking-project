@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,8 +13,7 @@ import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.uit.friendstracking.models.KUserInfo;
-import com.uit.friendstracking.webservices.ToServer;
+import com.uit.friendstracking.tasks.AskFriendAsyncTask;
 
 public class ListFriends extends ListActivity implements OnClickListener {
 
@@ -83,7 +80,7 @@ public class ListFriends extends ListActivity implements OnClickListener {
 
 					try {
 						// Save the friend request
-						if (!new AskFriendAsyncTask(listIds[i]).execute().get()) {
+						if (!new AskFriendAsyncTask(this, listIds[i]).execute().get()) {
 							fail = true;
 							Toast.makeText(
 									getApplicationContext(),
@@ -114,41 +111,8 @@ public class ListFriends extends ListActivity implements OnClickListener {
 			// Finish
 			this.finish();
 		}
-		// If the user press the button cancel
 		else if (sourceButton == bCancel) {
 			this.finish();
-
-		}
-
-	}
-
-	private class AskFriendAsyncTask extends AsyncTask<Void, Void, Boolean> {
-
-		private ProgressDialog m_progressDialog;
-		private int m_to;
-
-		public AskFriendAsyncTask(int to) {
-			m_to = to;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean result) {
-			m_progressDialog.dismiss();
-		}
-
-		@Override
-		protected void onPreExecute() {
-			m_progressDialog = ProgressDialog.show(ListFriends.this,
-					"Searching...", "System is Searching...");
-		}
-
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			try {
-				return ToServer.askFriend(m_to);
-			} catch (Exception e) {
-				return false;
-			}
 		}
 	}
 }

@@ -1,12 +1,9 @@
 package com.uit.friendstracking;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,23 +12,23 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.uit.friendstracking.models.KUserInfo;
-import com.uit.friendstracking.webservices.ToServer;
+import com.uit.friendstracking.tasks.SearchAsyncTask;
 
 public class FindFriend extends Activity implements OnClickListener {
 
-	private Button bSearch;
-	private Button bCancel;
+	private Button m_btSearch;
+	private Button m_btCancel;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.find);
 
-		bSearch = (Button) findViewById(R.id.find_bSearch);
-		bSearch.setOnClickListener(this);
+		m_btSearch = (Button) findViewById(R.id.find_bSearch);
+		m_btSearch.setOnClickListener(this);
 
-		bCancel = (Button) findViewById(R.id.find_bCancel);
-		bCancel.setOnClickListener(this);
+		m_btCancel = (Button) findViewById(R.id.find_bCancel);
+		m_btCancel.setOnClickListener(this);
 
 	}
 
@@ -39,7 +36,7 @@ public class FindFriend extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		Button sourceButton = (Button) v;
 
-		if (sourceButton == bSearch) {
+		if (sourceButton == m_btSearch) {
 			EditText textName = (EditText) findViewById(R.id.find_tName);
 			EditText textCity = (EditText) findViewById(R.id.find_tCity);
 			EditText textNick = (EditText) findViewById(R.id.find_tNick);
@@ -51,7 +48,8 @@ public class FindFriend extends Activity implements OnClickListener {
 			String surname = textSurname.getText().toString();
 
 			try {
-				List<KUserInfo> listUsers = new SearchAsyncTask(name, surname, nick, city).execute().get();
+				List<KUserInfo> listUsers = new SearchAsyncTask(this, name,
+						surname, nick, city).execute().get();
 
 				// Prepare to send the ids and nicks to ListFriends
 				String[] listItems = new String[listUsers.size()];
@@ -87,48 +85,8 @@ public class FindFriend extends Activity implements OnClickListener {
 
 		}
 		// If the user press the button cancel
-		else if (sourceButton == bCancel) {
+		else if (sourceButton == m_btCancel) {
 			this.finish();
 		}
 	}
-
-	private class SearchAsyncTask extends
-			AsyncTask<Void, Void, List<KUserInfo>> {
-
-		private ProgressDialog m_progressDialog;
-		private String m_name;
-		private String m_surname;
-		private String m_nick;
-		private String m_country;
-
-		public SearchAsyncTask(String name, String surname, String nick,
-				String country) {
-			m_name = name;
-			m_surname = surname;
-			m_nick = nick;
-			m_country = country;
-		}
-
-		@Override
-		protected void onPostExecute(List<KUserInfo> result) {
-			m_progressDialog.dismiss();
-		}
-
-		@Override
-		protected void onPreExecute() {
-			m_progressDialog = ProgressDialog.show(FindFriend.this,
-					"Searching...", "System is Searching...");
-		}
-
-		@Override
-		protected List<KUserInfo> doInBackground(Void... params) {
-			try {
-				return ToServer.searchFriend(m_nick, m_name, m_surname,
-						m_country);
-			} catch (Exception e) {
-				return new ArrayList<KUserInfo>();
-			}
-		}
-	}
-
 }
