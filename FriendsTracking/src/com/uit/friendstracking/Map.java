@@ -103,11 +103,15 @@ public class Map extends FragmentActivity implements LocationListener, OnTimeCha
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
+		m_locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		Criteria crit = new Criteria();
+		crit.setAccuracy(Criteria.ACCURACY_FINE);
+		m_provider = m_locationManager.getBestProvider(crit, true);
 		registerReceiver(m_timeChangedReceiver, m_intentFilter);
 
-		m_locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		Criteria criteria = new Criteria();
-		m_provider = "gps";// m_locationManager.getBestProvider(criteria,
+		
+		//Criteria criteria = new Criteria();
+		//m_provider = "gps";// m_locationManager.getBestProvider(criteria,
 							// false);
 		setUpMapIfNeeded();
 		showCurrentLocation();
@@ -144,10 +148,13 @@ public class Map extends FragmentActivity implements LocationListener, OnTimeCha
 
 	protected void setUpCamera() {
 		Location location = m_locationManager.getLastKnownLocation(m_provider);
-		double curLat = location.getLatitude();
-		double curLng = location.getLongitude();
-		LatLng curCoordinate = new LatLng(curLat, curLng);
-		m_map.moveCamera(CameraUpdateFactory.newLatLngZoom(curCoordinate, 14));
+		if (location != null) {
+			double curLat = location.getLatitude();
+			double curLng = location.getLongitude();
+			LatLng curCoordinate = new LatLng(curLat, curLng);
+			m_map.moveCamera(CameraUpdateFactory.newLatLngZoom(curCoordinate,
+					14));
+		}
 	}
 
 	@Override
