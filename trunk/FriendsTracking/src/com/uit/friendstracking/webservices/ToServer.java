@@ -245,10 +245,10 @@ public class ToServer {
 
 			envelope.addMapping("http://model", "UserInfo",
 					new KUserInfo().getClass());
-			/*
-			 * envelope.addMapping("http://model", "Position", new
-			 * KPosition().getClass());
-			 */
+			
+			 envelope.addMapping("http://model", "Position", new
+			 KPosition().getClass());
+			 
 
 			HttpTransportSE transport = new HttpTransportSE(URL);
 			transport.call(SOAP_ACTION, envelope);

@@ -2,6 +2,7 @@
 <menu
   xmlns:android="http://schemas.android.com/apk/res/android">
 		<item android:id="@+id/find_friend" android:title="Find a friend" />
+		<item android:id="@+id/update_userinfo" android:title="Update User Info" />
 		<item android:id="@+id/create_comment" android:title="New comment" />
 		<item android:id="@+id/friend_requests" android:title="Friend requests" />
 		<item android:id="@+id/modify_personal" android:title="Modify" />	
