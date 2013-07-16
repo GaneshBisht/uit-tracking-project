@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -139,39 +141,75 @@ public class Map extends FragmentActivity implements LocationListener {
 
 		switch (id) {
 
+		// If the user wants to create a comment
 		case R.id.create_comment:
+			/*
+			 * newIntent = new Intent(this, CreateComment.class);
+			 * this.startActivityForResult(newIntent, 0);
+			 */
+
 			return true;
 
+			// If the user wants to take a photo
 		case R.id.take_photo:
+			/*
+			 * newIntent = new Intent(this, CameraAndroid.class);
+			 * this.startActivityForResult(newIntent, 0);
+			 */
+
 			return true;
 
+			// If the user wants to find friends
 		case R.id.find_friend:
 			Intent newIntent = new Intent(this, FindFriend.class);
 			this.startActivityForResult(newIntent, 0);
-			return true;
 
+			return true;
+		case R.id.update_userinfo:
+			Intent intentUpdateUser = new Intent(this, UserInformation.class);
+			//intentUpdateUser.putExtra("items", listItems);
+			this.startActivityForResult(intentUpdateUser, 0);
+
+			return true;
+			// If the user wants to see his friends requests
 		case R.id.friend_requests:
 
 			try {
-				if (new GetRequestsAsyncTask(this).execute().get().size() > 0) {
+				// If the user has friend's requests.
+				if (new GetRequestsAsyncTask().execute().get().size() > 0) {
+
 					newIntent = new Intent(this, FriendRequest.class);
 					this.startActivityForResult(newIntent, 0);
 				} else {
-					Toast.makeText(getApplicationContext(), "You do not have any friend's request.", Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(),
+							"You do not have any friend's request.",
+							Toast.LENGTH_LONG).show();
 				}
 			} catch (Exception e) {
-				Toast.makeText(getApplicationContext(), "Fail while trying to access to friend's request: " + e.getMessage(), Toast.LENGTH_LONG).show();
+				Toast.makeText(
+						getApplicationContext(),
+						"Fail while trying to access to friend's request: "
+								+ e.getMessage(), Toast.LENGTH_LONG).show();
 
 			}
 
 			return true;
 
+			// If the user wants to modify his personal data
 		case R.id.modify_personal:
+
+			/*
+			 * newIntent = new Intent(this, ModifyUser.class);
+			 * this.startActivityForResult(newIntent, 0);
+			 */
 			return true;
 
+			// If the user wants to exit
 		case R.id.exit:
+
 			ToServer.logout();
 			this.finish();
+
 			return true;
 
 		default:
@@ -181,6 +219,34 @@ public class Map extends FragmentActivity implements LocationListener {
 		return true;
 	}
 
+	private class GetRequestsAsyncTask extends
+	AsyncTask<Void, Void, List<KUserInfo>> {
+
+		private ProgressDialog m_progressDialog;
+		
+		public GetRequestsAsyncTask() {
+		}
+		
+		@Override
+		protected void onPostExecute(List<KUserInfo> result) {
+			m_progressDialog.dismiss();
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			m_progressDialog = ProgressDialog.show(Map.this, "Searching...",
+					"System is Searching...");
+		}
+		
+		@Override
+		protected List<KUserInfo> doInBackground(Void... params) {
+			try {
+				return ToServer.getRequests();
+			} catch (Exception e) {
+				return new ArrayList<KUserInfo>();
+			}
+		}
+	}
 	private void setUpMap() {
 		m_map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 		m_map.setTrafficEnabled(true);
