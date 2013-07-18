@@ -59,28 +59,24 @@ public class Login extends Activity implements OnClickListener {
 			username = m_username.getText().toString();
 
 			if (username.length() == 0)
-				Toast.makeText(getApplicationContext(),
-						"You must enter a nick", Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), "You must enter a nick", Toast.LENGTH_LONG).show();
 			else {
 				password = m_password.getText().toString();
 
 				if (password.length() == 0) {
-					Toast.makeText(getApplicationContext(),
-							"You must enter a password", Toast.LENGTH_LONG)
-							.show();
+					Toast.makeText(getApplicationContext(), "You must enter a password", Toast.LENGTH_LONG).show();
 				} else {
 					try {
-						if (new LoginAsyncTask(this, username, password).execute().get()) {
+						LoginAsyncTask loginAsyncTask = new LoginAsyncTask(this, username, password);
+
+						if (loginAsyncTask.execute().get()) {
 							if (ToServer.logged() == true) {
 
-								Intent intent = new Intent(v.getContext(),
-										Map.class);
+								Intent intent = new Intent(v.getContext(), Map.class);
 								this.startActivityForResult(intent, 0);
 
 							} else {
-								Toast.makeText(
-										getApplicationContext(),
-										"The user has not been identified correctly. Please re-enter your nick/password.",
+								Toast.makeText(getApplicationContext(), "The user has not been identified correctly. Please re-enter your nick/password.",
 										Toast.LENGTH_LONG).show();
 							}
 						}
