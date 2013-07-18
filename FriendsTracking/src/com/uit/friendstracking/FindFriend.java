@@ -24,10 +24,10 @@ public class FindFriend extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.find);
 
-		m_btSearch = (Button) findViewById(R.id.find_bSearch);
+		m_btSearch = (Button) findViewById(R.id.find_btSearch);
 		m_btSearch.setOnClickListener(this);
 
-		m_btCancel = (Button) findViewById(R.id.find_bCancel);
+		m_btCancel = (Button) findViewById(R.id.find_btCancel);
 		m_btCancel.setOnClickListener(this);
 
 	}
@@ -37,10 +37,10 @@ public class FindFriend extends Activity implements OnClickListener {
 		Button sourceButton = (Button) v;
 
 		if (sourceButton == m_btSearch) {
-			EditText textName = (EditText) findViewById(R.id.find_tName);
-			EditText textCity = (EditText) findViewById(R.id.find_tCity);
-			EditText textNick = (EditText) findViewById(R.id.find_tNick);
-			EditText textSurname = (EditText) findViewById(R.id.find_tSurname);
+			EditText textName = (EditText) findViewById(R.id.find_etName);
+			EditText textCity = (EditText) findViewById(R.id.find_etCountry);
+			EditText textNick = (EditText) findViewById(R.id.find_etNick);
+			EditText textSurname = (EditText) findViewById(R.id.find_etSurname);
 
 			String name = textName.getText().toString();
 			String city = textCity.getText().toString();

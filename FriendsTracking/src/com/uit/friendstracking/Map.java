@@ -94,7 +94,7 @@ public class Map extends FragmentActivity implements LocationListener {
 		Criteria criteria = new Criteria();
 		criteria.setAccuracy(Criteria.ACCURACY_FINE);
 		m_provider = m_locationManager.getBestProvider(criteria, true);
-		//registerReceiver(m_timeChangedReceiver, m_intentFilter);
+		// registerReceiver(m_timeChangedReceiver, m_intentFilter);
 
 		setUpMapIfNeeded();
 	}
@@ -110,10 +110,10 @@ public class Map extends FragmentActivity implements LocationListener {
 		super.onResume();
 		setUpMapIfNeeded();
 		m_locationManager.requestLocationUpdates(m_provider, 500, 1, this);
-		
+
 		IntentFilter intentFilter = new IntentFilter();
-	    intentFilter.addAction(Intent.ACTION_TIME_TICK);
-	    registerReceiver(m_timeChangedReceiver, intentFilter); 
+		intentFilter.addAction(Intent.ACTION_TIME_TICK);
+		registerReceiver(m_timeChangedReceiver, intentFilter);
 	}
 
 	private void setUpMapIfNeeded() {
@@ -143,18 +143,14 @@ public class Map extends FragmentActivity implements LocationListener {
 
 		// If the user wants to create a comment
 		case R.id.create_comment:
-			/*
-			 * newIntent = new Intent(this, CreateComment.class);
-			 * this.startActivityForResult(newIntent, 0);
-			 */
-
+			Intent noteIntent = new Intent(this, CreateNote.class);
+			this.startActivityForResult(noteIntent, 0);
 			return true;
 
 			// If the user wants to take a photo
 		case R.id.take_photo:
 			/*
-			 * newIntent = new Intent(this, CameraAndroid.class);
-			 * this.startActivityForResult(newIntent, 0);
+			 * newIntent = new Intent(this, CameraAndroid.class); this.startActivityForResult(newIntent, 0);
 			 */
 
 			return true;
@@ -167,7 +163,7 @@ public class Map extends FragmentActivity implements LocationListener {
 			return true;
 		case R.id.update_userinfo:
 			Intent intentUpdateUser = new Intent(this, UserInformation.class);
-			//intentUpdateUser.putExtra("items", listItems);
+			// intentUpdateUser.putExtra("items", listItems);
 			this.startActivityForResult(intentUpdateUser, 0);
 
 			return true;
@@ -181,15 +177,10 @@ public class Map extends FragmentActivity implements LocationListener {
 					newIntent = new Intent(this, FriendRequest.class);
 					this.startActivityForResult(newIntent, 0);
 				} else {
-					Toast.makeText(getApplicationContext(),
-							"You do not have any friend's request.",
-							Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), "You do not have any friend's request.", Toast.LENGTH_LONG).show();
 				}
 			} catch (Exception e) {
-				Toast.makeText(
-						getApplicationContext(),
-						"Fail while trying to access to friend's request: "
-								+ e.getMessage(), Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), "Fail while trying to access to friend's request: " + e.getMessage(), Toast.LENGTH_LONG).show();
 
 			}
 
@@ -199,8 +190,7 @@ public class Map extends FragmentActivity implements LocationListener {
 		case R.id.modify_personal:
 
 			/*
-			 * newIntent = new Intent(this, ModifyUser.class);
-			 * this.startActivityForResult(newIntent, 0);
+			 * newIntent = new Intent(this, ModifyUser.class); this.startActivityForResult(newIntent, 0);
 			 */
 			return true;
 
@@ -219,25 +209,23 @@ public class Map extends FragmentActivity implements LocationListener {
 		return true;
 	}
 
-	private class GetRequestsAsyncTask extends
-	AsyncTask<Void, Void, List<KUserInfo>> {
+	private class GetRequestsAsyncTask extends AsyncTask<Void, Void, List<KUserInfo>> {
 
 		private ProgressDialog m_progressDialog;
-		
+
 		public GetRequestsAsyncTask() {
 		}
-		
+
 		@Override
 		protected void onPostExecute(List<KUserInfo> result) {
 			m_progressDialog.dismiss();
 		}
-		
+
 		@Override
 		protected void onPreExecute() {
-			m_progressDialog = ProgressDialog.show(Map.this, "Searching...",
-					"System is Searching...");
+			m_progressDialog = ProgressDialog.show(Map.this, "Searching...", "System is Searching...");
 		}
-		
+
 		@Override
 		protected List<KUserInfo> doInBackground(Void... params) {
 			try {
@@ -247,6 +235,7 @@ public class Map extends FragmentActivity implements LocationListener {
 			}
 		}
 	}
+
 	private void setUpMap() {
 		m_map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 		m_map.setTrafficEnabled(true);
