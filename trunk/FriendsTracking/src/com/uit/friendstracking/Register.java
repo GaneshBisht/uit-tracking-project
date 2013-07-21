@@ -132,11 +132,12 @@ public class Register extends Activity implements OnClickListener {
 				userInfo.setAddress(address);
 				userInfo.setAdministrator(false);
 				
-				/*BitmapDrawable drawable = (BitmapDrawable) mImageView.getDrawable();
+				BitmapDrawable drawable = (BitmapDrawable) mImageView.getDrawable();
 				Bitmap bitmap = drawable.getBitmap();
 				ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
 				bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayBitmapStream);
-				byte[] data = byteArrayBitmapStream.toByteArray();*/
+				if(currentPhoto == null)
+					currentPhoto = byteArrayBitmapStream.toByteArray();
 				KPhoto photo = new KPhoto();
 				photo.setPhoto(currentPhoto);
 				//userInfo.setPhoto(photo);
