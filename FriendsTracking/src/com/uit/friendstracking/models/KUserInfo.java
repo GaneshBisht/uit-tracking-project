@@ -26,6 +26,7 @@ public class KUserInfo extends UserInfo implements KvmSerializable {
     	setAdministrator(ui.isAdministrator());
     	setPhone(ui.getPhone());
     	setSurname(ui.getSurname());
+    	setPhoto(ui.getPhoto());
     }
     
 	@Override
@@ -51,6 +52,8 @@ public class KUserInfo extends UserInfo implements KvmSerializable {
 			return this.getPosition();
 		case 9:
 			return this.getSurname();
+		case 10:
+			return this.getPhoto();
 		}
 		return null;
 	}
@@ -101,6 +104,10 @@ public class KUserInfo extends UserInfo implements KvmSerializable {
 			arg2.type=PropertyInfo.STRING_CLASS;
 			arg2.name="surname";
 			break;
+		case 10:
+			arg2.type=PropertyInfo.OBJECT_TYPE;
+			arg2.name="photo";
+			break;
 			  
 		}
 	}
@@ -136,6 +143,9 @@ public class KUserInfo extends UserInfo implements KvmSerializable {
 			break;
 		case 9:
 			this.setSurname((String)arg1);
+			break;
+		case 10:
+			this.setPhoto((KPhoto)arg1);
 			break;
 		}
 	}
