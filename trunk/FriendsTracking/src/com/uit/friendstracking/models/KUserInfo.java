@@ -59,7 +59,7 @@ public class KUserInfo extends UserInfo implements KvmSerializable {
 	}
 	@Override
 	public int getPropertyCount() {
-		return 10;
+		return 11;
 	}
 	@Override
 	public void getPropertyInfo(int arg0, @SuppressWarnings("rawtypes") Hashtable arg1, PropertyInfo arg2) {

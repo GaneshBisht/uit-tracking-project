@@ -1,13 +1,23 @@
 package com.uit.friendstracking;
 
+import java.io.ByteArrayOutputStream;
+
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.hardware.Camera;
+import android.hardware.Camera.PictureCallback;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.uit.friendstracking.camera.CameraPreview;
+import com.uit.friendstracking.models.KPhoto;
 import com.uit.friendstracking.models.KUserInfo;
 import com.uit.friendstracking.tasks.CheckExistAsyncTask;
 import com.uit.friendstracking.tasks.NewUserAsyncTask;
@@ -25,14 +35,24 @@ public class Register extends Activity implements OnClickListener {
 	private EditText m_etUserName;
 	private EditText m_etPassWord;
 	private EditText m_etPhone;
+	private ImageView mImageView;
+	private CameraPreview preview;
+	private byte[] currentPhoto = null;
+	private Button m_button1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register);
+		
+		preview = new CameraPreview(this);
+		((FrameLayout) findViewById(R.id.camera_preview1)).addView(preview);
 
 		m_btSave = (Button) findViewById(R.id.register_bSave);
 		m_btSave.setOnClickListener(this);
+		
+		m_button1 = (Button) findViewById(R.id.bt1);
+		m_button1.setOnClickListener(this);
 
 		m_btCancel = (Button) findViewById(R.id.register_bCancel);
 		m_btCancel.setOnClickListener(this);
@@ -45,6 +65,7 @@ public class Register extends Activity implements OnClickListener {
 		m_etUserName = (EditText) findViewById(R.id.register_tNick);
 		m_etPassWord = (EditText) findViewById(R.id.register_tPassword);
 		m_etPhone = (EditText) findViewById(R.id.register_tPhone);
+		mImageView = (ImageView)findViewById(R.id.register_Image);
 
 	}
 
@@ -110,6 +131,16 @@ public class Register extends Activity implements OnClickListener {
 				userInfo.setCountry(country);
 				userInfo.setAddress(address);
 				userInfo.setAdministrator(false);
+				
+				/*BitmapDrawable drawable = (BitmapDrawable) mImageView.getDrawable();
+				Bitmap bitmap = drawable.getBitmap();
+				ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+				bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayBitmapStream);
+				byte[] data = byteArrayBitmapStream.toByteArray();*/
+				KPhoto photo = new KPhoto();
+				photo.setPhoto(currentPhoto);
+				userInfo.setPhoto(photo);
+				
 
 				try {
 					if (new CheckExistAsyncTask(this, nick).execute().get()) {
@@ -145,5 +176,16 @@ public class Register extends Activity implements OnClickListener {
 		else if (sourceButton == this.m_btCancel) {
 			this.finish();
 		}
+		else if(sourceButton == this.m_button1){
+			preview.getCamera().takePicture(null, null, jpegCallback);
+		}
 	}
+	
+	PictureCallback jpegCallback = new PictureCallback() {
+
+		// Store the photo
+		public void onPictureTaken(byte[] data, Camera camera) {
+			currentPhoto = data;
+		}
+	};
 }
