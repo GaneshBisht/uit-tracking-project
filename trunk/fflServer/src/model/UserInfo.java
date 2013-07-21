@@ -16,6 +16,7 @@ public class UserInfo {
 	private String address;
 	private boolean isAdministrator;
 	private Position lastPosition;
+	private Photo photo;
 	
 	public String toString(){
 		return id + "/" + nick + ":" +
@@ -117,5 +118,13 @@ public class UserInfo {
 	public void setPosition(Position p) {
 		lastPosition=p;
 	}
+	public void setPhoto(Photo p)
+	{
+		photo = p;
+	}
+	public Photo getPhoto() {
+		return photo;
+	}
+	
 
 }
