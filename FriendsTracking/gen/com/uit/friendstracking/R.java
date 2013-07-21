@@ -182,71 +182,111 @@ containing a value of this type.
         public static final int ic_launcher=0x7f020018;
     }
     public static final class id {
-        public static final int action_settings=0x7f05002b;
-        public static final int bLogin=0x7f050018;
-        public static final int bRegister=0x7f050019;
-        public static final int btAdd=0x7f050010;
-        public static final int btCancel=0x7f050011;
-        public static final int create_comment=0x7f05002d;
-        public static final int exit=0x7f050031;
-        public static final int find_bCancel=0x7f05000f;
-        public static final int find_bSearch=0x7f05000e;
-        public static final int find_friend=0x7f05002c;
-        public static final int find_tCity=0x7f05000b;
-        public static final int find_tName=0x7f050007;
-        public static final int find_tNick=0x7f05000d;
-        public static final int find_tSurname=0x7f050009;
-        public static final int friend_requests=0x7f05002e;
+        public static final int action_settings=0x7f05004e;
+        public static final int bLogin=0x7f050025;
+        public static final int bRegister=0x7f050026;
+        public static final int bt1=0x7f050040;
+        public static final int btAdd=0x7f05001d;
+        public static final int btCancel=0x7f05001e;
+        public static final int btn_draw=0x7f05002d;
+        public static final int btpickimage=0x7f05003d;
+        public static final int btupdate=0x7f05003e;
+        public static final int camera_bCancel=0x7f05000b;
+        public static final int camera_bSave=0x7f05000a;
+        public static final int camera_bTakePhoto=0x7f050008;
+        public static final int camera_bTryAgain=0x7f050009;
+        public static final int camera_lComment=0x7f050006;
+        public static final int camera_preview=0x7f050005;
+        public static final int camera_preview1=0x7f05003f;
+        public static final int camera_tComment=0x7f050007;
+        public static final int create_comment=0x7f050051;
+        public static final int exit=0x7f050055;
+        public static final int find_btCancel=0x7f05001c;
+        public static final int find_btSearch=0x7f05001b;
+        public static final int find_etCountry=0x7f050017;
+        public static final int find_etName=0x7f050011;
+        public static final int find_etNick=0x7f05001a;
+        public static final int find_etSurname=0x7f050014;
+        public static final int find_friend=0x7f05004f;
+        public static final int find_tvCountry=0x7f050016;
+        public static final int find_tvName=0x7f050010;
+        public static final int find_tvNick=0x7f050019;
+        public static final int find_tvSurname=0x7f050013;
+        public static final int friend_requests=0x7f050052;
         public static final int hybrid=0x7f050004;
-        public static final int labelCity=0x7f05000a;
-        public static final int labelName=0x7f050006;
-        public static final int labelNick=0x7f05000c;
-        public static final int labelSurname=0x7f050008;
-        public static final int listrequest_bAdd=0x7f050012;
-        public static final int listrequest_bCancel=0x7f050013;
-        public static final int map=0x7f05001a;
-        public static final int modify_personal=0x7f05002f;
+        public static final int iv_icon=0x7f05000c;
+        public static final int iv_photo=0x7f05003c;
+        public static final int listrequest_bAdd=0x7f05001f;
+        public static final int listrequest_bCancel=0x7f050020;
+        public static final int map=0x7f05002c;
+        public static final int modify_personal=0x7f050053;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
-        public static final int register_bCancel=0x7f05002a;
-        public static final int register_bSave=0x7f050029;
-        public static final int register_tAddress=0x7f050022;
-        public static final int register_tCountry=0x7f050024;
-        public static final int register_tEmail=0x7f050026;
-        public static final int register_tName=0x7f05001e;
-        public static final int register_tNick=0x7f05001b;
-        public static final int register_tPassword=0x7f05001c;
-        public static final int register_tPhone=0x7f050028;
-        public static final int register_tSurname=0x7f050020;
+        public static final int rb_bicycling=0x7f05002a;
+        public static final int rb_driving=0x7f050029;
+        public static final int rb_walking=0x7f05002b;
+        public static final int register_Image=0x7f05004a;
+        public static final int register_bCancel=0x7f05004c;
+        public static final int register_bSave=0x7f05004b;
+        public static final int register_tAddress=0x7f050045;
+        public static final int register_tCountry=0x7f050046;
+        public static final int register_tEmail=0x7f050047;
+        public static final int register_tName=0x7f050043;
+        public static final int register_tNick=0x7f050041;
+        public static final int register_tPassword=0x7f050042;
+        public static final int register_tPhone=0x7f050048;
+        public static final int register_tSurname=0x7f050044;
+        public static final int rg_modes=0x7f050028;
         public static final int satellite=0x7f050002;
-        public static final int tNick=0x7f050015;
-        public static final int tPassword=0x7f050017;
-        public static final int take_photo=0x7f050030;
+        public static final int tNick=0x7f050022;
+        public static final int tPassword=0x7f050024;
+        public static final int tableRow1=0x7f05000f;
+        public static final int tableRow2=0x7f050012;
+        public static final int tableRow3=0x7f050015;
+        public static final int tableRow4=0x7f050018;
+        public static final int take_photo=0x7f050054;
+        public static final int tbAddress=0x7f050035;
+        public static final int tbCountry=0x7f050037;
+        public static final int tbEmail=0x7f050039;
+        public static final int tbName=0x7f050031;
+        public static final int tbNick=0x7f05002e;
+        public static final int tbPass=0x7f05002f;
+        public static final int tbPhone=0x7f05003b;
+        public static final int tbSurName=0x7f050033;
         public static final int terrain=0x7f050003;
-        public static final int textView1=0x7f050014;
-        public static final int textView2=0x7f050016;
-        public static final int textView3=0x7f05001d;
-        public static final int textView4=0x7f05001f;
-        public static final int textView5=0x7f050021;
-        public static final int textView6=0x7f050023;
-        public static final int textView7=0x7f050025;
-        public static final int textView8=0x7f050027;
-        public static final int widget28=0x7f050005;
+        public static final int textView1=0x7f050021;
+        public static final int textView2=0x7f050023;
+        public static final int textView3=0x7f050030;
+        public static final int textView4=0x7f050032;
+        public static final int textView5=0x7f050034;
+        public static final int textView6=0x7f050036;
+        public static final int textView7=0x7f050038;
+        public static final int textView8=0x7f05003a;
+        public static final int textView9=0x7f050049;
+        public static final int tv_distance_time=0x7f050027;
+        public static final int tv_name=0x7f05000d;
+        public static final int update_userinfo=0x7f050050;
+        public static final int widget28=0x7f05000e;
+        public static final int widget45=0x7f05004d;
     }
     public static final class layout {
-        public static final int find=0x7f030000;
-        public static final int list_friends=0x7f030001;
-        public static final int list_request=0x7f030002;
-        public static final int login=0x7f030003;
-        public static final int map=0x7f030004;
-        public static final int register=0x7f030005;
+        public static final int camera=0x7f030000;
+        public static final int crop_selector=0x7f030001;
+        public static final int find=0x7f030002;
+        public static final int list_friends=0x7f030003;
+        public static final int list_request=0x7f030004;
+        public static final int login=0x7f030005;
+        public static final int map=0x7f030006;
+        public static final int modifyuser=0x7f030007;
+        public static final int register=0x7f030008;
+        public static final int viewimage=0x7f030009;
     }
     public static final class menu {
         public static final int login=0x7f090000;
         public static final int map=0x7f090001;
     }
     public static final class string {
-        public static final int IP=0x7f060018;
+        public static final int IP=0x7f060017;
         public static final int action_settings=0x7f060016;
         public static final int app_name=0x7f060015;
         /**   Title for notification shown when GooglePlayServices is unavailable [CHAR LIMIT=70] 
@@ -258,6 +298,7 @@ containing a value of this type.
         /**   Requested by string saying which app requested the notification. [CHAR LIMIT=42] 
          */
         public static final int auth_client_requested_by_msg=0x7f060011;
+        public static final int cancel=0x7f060020;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=40] 
@@ -313,9 +354,11 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f06000e;
-        public static final int hello_world=0x7f060017;
-        public static final int loading_message=0x7f06001a;
-        public static final int loading_title=0x7f060019;
+        public static final int country=0x7f06001d;
+        public static final int find_friend=0x7f06001a;
+        public static final int hello_world=0x7f060021;
+        public static final int loading_message=0x7f060019;
+        public static final int loading_title=0x7f060018;
         /**  Location client code resources (prefix with location_client) 
 
         Begin strings for location.reporting
@@ -327,6 +370,15 @@ containing a value of this type.
         public static final int location_client_ulr_inactive_age_under_13=0x7f060012;
         public static final int location_client_ulr_inactive_age_unknown=0x7f060013;
         public static final int location_client_ulr_inactive_unknown_restriction=0x7f060014;
+        public static final int name=0x7f06001b;
+        public static final int nick=0x7f06001e;
+        public static final int search=0x7f06001f;
+        public static final int str_btn_draw=0x7f060026;
+        public static final int str_rb_bicycling=0x7f060024;
+        public static final int str_rb_driving=0x7f060023;
+        public static final int str_rb_walking=0x7f060025;
+        public static final int str_tv_distance_time=0x7f060022;
+        public static final int surname=0x7f06001c;
     }
     public static final class style {
         /** 
@@ -342,13 +394,11 @@ containing a value of this type.
         Base application theme for API 11+. This theme completely replaces
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
     
- API 11 theme customizations can go here. 
 
         Base application theme for API 14+. This theme completely replaces
         AppBaseTheme from BOTH res/values/styles.xml and
         res/values-v11/styles.xml on API 14+ devices.
     
- API 14 theme customizations can go here. 
          */
         public static final int AppBaseTheme=0x7f080000;
         /**  Application theme. 
