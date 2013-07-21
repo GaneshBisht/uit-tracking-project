@@ -1,9 +1,16 @@
 package com.uit.friendstracking;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.ksoap2.serialization.MarshalBase64;
 
 import com.uit.friendstracking.imagesupport.*;
 
@@ -16,7 +23,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -130,24 +139,59 @@ public class UserInformation extends Activity implements OnClickListener {
 		});
 
 	};
-
+	
+	public Bitmap loadBitmap(String url)
+	{
+	    Bitmap bm = null;
+	    InputStream is = null;
+	    BufferedInputStream bis = null;
+	    try 
+	    {
+	        URLConnection conn = new URL(url).openConnection();
+	        conn.connect();
+	        is = conn.getInputStream();
+	        bis = new BufferedInputStream(is, 8192);
+	        bm = BitmapFactory.decodeStream(bis);
+	    }
+	    catch (Exception e) 
+	    {
+	        e.printStackTrace();
+	    }
+	    finally {
+	        if (bis != null) 
+	        {
+	            try 
+	            {
+	                bis.close();
+	            }
+	            catch (IOException e) 
+	            {
+	                e.printStackTrace();
+	            }
+	        }
+	        if (is != null) 
+	        {
+	            try 
+	            {
+	                is.close();
+	            }
+	            catch (IOException e) 
+	            {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+	    return bm;
+	}
 	@Override
 	public void onClick(View v) {
-		mImageView.buildDrawingCache(true);
-		Bitmap bitmap = Bitmap.createBitmap(mImageView.getDrawingCache());
-		//Bitmap bitmap=BitmapFactory.decodeResource(getResources(), R.id.iv_photo);
-		if(bitmap!= null)
-		{
-		    ByteArrayOutputStream stream=new ByteArrayOutputStream();
-		    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
-		    byte[] image=stream.toByteArray();
-	
-			et_name.setText(image.length);
-		}else
-		{
-			et_name.setText("null");
-		}
-
+		BitmapDrawable drawable = (BitmapDrawable) mImageView.getDrawable();
+		Bitmap bitmap = drawable.getBitmap();
+		ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayBitmapStream);
+		byte[] b = byteArrayBitmapStream.toByteArray();
+		//then simple encoding to base64 and off to server
+		//encodedImage = Base64.encodeToString(b, Base64.NO_WRAP);
 	}
 	
 	 @Override
@@ -157,14 +201,11 @@ public class UserInformation extends Activity implements OnClickListener {
 		    switch (requestCode) {
 			    case PICK_FROM_CAMERA:
 			    	doCrop();
-			    	
 			    	break;
 			    	
 			    case PICK_FROM_FILE: 
 			    	mImageCaptureUri = data.getData();
-			    	
 			    	doCrop();
-		    
 			    	break;	    	
 		    
 			    case CROP_FROM_CAMERA:	    	
