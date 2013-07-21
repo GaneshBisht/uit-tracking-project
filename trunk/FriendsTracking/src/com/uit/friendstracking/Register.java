@@ -139,7 +139,7 @@ public class Register extends Activity implements OnClickListener {
 				byte[] data = byteArrayBitmapStream.toByteArray();*/
 				KPhoto photo = new KPhoto();
 				photo.setPhoto(currentPhoto);
-				userInfo.setPhoto(photo);
+				//userInfo.setPhoto(photo);
 				
 
 				try {
@@ -149,7 +149,7 @@ public class Register extends Activity implements OnClickListener {
 								Toast.LENGTH_LONG).show();
 					} else {
 						boolean succesfully = new NewUserAsyncTask(this, userInfo,
-								password).execute().get();
+								password, photo).execute().get();
 
 						if (succesfully) {
 							Toast.makeText(getApplicationContext(),
