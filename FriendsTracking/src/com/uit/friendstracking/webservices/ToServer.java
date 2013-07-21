@@ -298,6 +298,35 @@ public class ToServer {
 
 		return (envelope.getResponse() != null);
 	}
+	public static boolean newUser1(KUserInfo u, String pw, Photo photo) throws Exception {
+		pw = getHash(pw);
+
+		String METHOD_NAME = "newUser1";
+		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
+
+		request.addProperty("u", u);
+		request.addProperty("pw", pw);
+		if (photo != null) {
+			request.addProperty("photo", Base64.encodeToString(photo.getPhoto(), Base64.DEFAULT));
+		} else {
+			request.addProperty("photo", "null");
+		}
+
+		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+		envelope.setOutputSoapObject(request);
+
+		envelope.addMapping("http://controller", "KUserInfo", KUserInfo.class);
+
+		envelope.addMapping("http://controller", "KPosition", KPosition.class);
+
+		HttpTransportSE transport = new HttpTransportSE(URL);
+
+		envelope.addMapping("http://controller", "Auth", new KAuth().getClass());
+
+		transport.call(SOAP_ACTION, envelope);
+
+		return (envelope.getResponse() != null);
+	}
 
 	public static boolean changeUser(KUserInfo u, String pw) throws Exception {
 
@@ -544,4 +573,7 @@ public class ToServer {
 		}
 		return hash;
 	}
+
+
+	
 }

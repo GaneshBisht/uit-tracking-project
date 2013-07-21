@@ -1,5 +1,6 @@
 package com.uit.friendstracking.tasks;
 
+import model.Photo;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -13,11 +14,13 @@ public class NewUserAsyncTask extends AsyncTask<Void, Void, Boolean> {
 	private ProgressDialog m_progressDialog;
 	private KUserInfo m_user;
 	private String m_passWord;
+	private Photo m_photo;
 
-	public NewUserAsyncTask(Context context, KUserInfo user, String passWord) {
+	public NewUserAsyncTask(Context context, KUserInfo user, String passWord,Photo photo) {
 		m_context = context;
 		m_user = user;
 		m_passWord = passWord;
+		m_photo = photo;
 	}
 
 	@Override
@@ -36,7 +39,7 @@ public class NewUserAsyncTask extends AsyncTask<Void, Void, Boolean> {
 	@Override
 	protected Boolean doInBackground(Void... params) {
 		try {
-			return ToServer.newUser(m_user, m_passWord);
+			return ToServer.newUser1(m_user, m_passWord, m_photo);
 		} catch (Exception e) {
 			return false;
 		}
