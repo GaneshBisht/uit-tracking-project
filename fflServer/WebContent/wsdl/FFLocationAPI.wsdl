@@ -5,12 +5,27 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
  <wsdl:types>
   <schema elementFormDefault="qualified" targetNamespace="http://controller" xmlns="http://www.w3.org/2001/XMLSchema">
    <import namespace="http://model"/>
-   <element name="getUsers">
+   <element name="exists">
+    <complexType>
+     <sequence>
+      <element name="nick" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="existsResponse">
+    <complexType>
+     <sequence>
+      <element name="existsReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getNotes">
     <complexType>
      <sequence>
       <element name="a" type="impl:Auth"/>
-      <element name="count" type="xsd:int"/>
-      <element name="page" type="xsd:int"/>
+      <element name="id" type="xsd:int"/>
+      <element name="c" type="xsd:int"/>
+      <element name="attachPhotos" type="xsd:boolean"/>
      </sequence>
     </complexType>
    </element>
@@ -20,10 +35,10 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="userID" type="xsd:int"/>
     </sequence>
    </complexType>
-   <element name="getUsersResponse">
+   <element name="getNotesResponse">
     <complexType>
      <sequence>
-      <element maxOccurs="unbounded" name="getUsersReturn" type="tns1:UserInfo"/>
+      <element maxOccurs="unbounded" name="getNotesReturn" type="tns1:Note"/>
      </sequence>
     </complexType>
    </element>
@@ -42,128 +57,49 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
-   <element name="getNotes">
+   <element name="getRequests">
+    <complexType>
+     <sequence>
+      <element name="a" type="impl:Auth"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getRequestsResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getRequestsReturn" type="tns1:UserInfo"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getPositions">
     <complexType>
      <sequence>
       <element name="a" type="impl:Auth"/>
       <element name="id" type="xsd:int"/>
       <element name="c" type="xsd:int"/>
-      <element name="attachPhotos" type="xsd:boolean"/>
      </sequence>
     </complexType>
    </element>
-   <element name="getNotesResponse">
+   <element name="getPositionsResponse">
     <complexType>
      <sequence>
-      <element maxOccurs="unbounded" name="getNotesReturn" type="tns1:Note"/>
+      <element maxOccurs="unbounded" name="getPositionsReturn" type="tns1:Position"/>
      </sequence>
     </complexType>
    </element>
-   <element name="loginWP">
-    <complexType>
-     <sequence>
-      <element name="nick" type="xsd:string"/>
-      <element name="pw" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="loginWPResponse">
-    <complexType>
-     <sequence>
-      <element name="loginWPReturn" type="impl:Auth"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="myUser">
+   <element name="getUsers">
     <complexType>
      <sequence>
       <element name="a" type="impl:Auth"/>
+      <element name="count" type="xsd:int"/>
+      <element name="page" type="xsd:int"/>
      </sequence>
     </complexType>
    </element>
-   <element name="myUserResponse">
+   <element name="getUsersResponse">
     <complexType>
      <sequence>
-      <element name="myUserReturn" type="tns1:UserInfo"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="changeUser">
-    <complexType>
-     <sequence>
-      <element name="a" type="impl:Auth"/>
-      <element name="ui" type="tns1:UserInfo"/>
-      <element name="pw" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="changeUserResponse">
-    <complexType>
-     <sequence>
-      <element name="changeUserReturn" type="xsd:boolean"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="newUser">
-    <complexType>
-     <sequence>
-      <element name="ui" type="tns1:UserInfo"/>
-      <element name="pw" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="newUserResponse">
-    <complexType>
-     <sequence>
-      <element name="newUserReturn" type="impl:Auth"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="newAdmin">
-    <complexType>
-     <sequence>
-      <element name="a" type="impl:Auth"/>
-      <element name="ui" type="tns1:UserInfo"/>
-      <element name="pw" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="newAdminResponse">
-    <complexType>
-     <sequence>
-      <element name="newAdminReturn" type="xsd:boolean"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="logPosition">
-    <complexType>
-     <sequence>
-      <element name="a" type="impl:Auth"/>
-      <element name="p" type="tns1:Position"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="logPositionResponse">
-    <complexType>
-     <sequence>
-      <element name="logPositionReturn" type="xsd:boolean"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="setNote">
-    <complexType>
-     <sequence>
-      <element name="a" type="impl:Auth"/>
-      <element name="position" type="tns1:Position"/>
-      <element name="note" type="xsd:string"/>
-      <element name="photo" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="setNoteResponse">
-    <complexType>
-     <sequence>
-      <element name="setNoteReturn" type="xsd:boolean"/>
+      <element maxOccurs="unbounded" name="getUsersReturn" type="tns1:UserInfo"/>
      </sequence>
     </complexType>
    </element>
@@ -197,17 +133,20 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
-   <element name="getRequests">
+   <element name="setNote">
     <complexType>
      <sequence>
       <element name="a" type="impl:Auth"/>
+      <element name="position" type="tns1:Position"/>
+      <element name="note" type="xsd:string"/>
+      <element name="photo" type="xsd:string"/>
      </sequence>
     </complexType>
    </element>
-   <element name="getRequestsResponse">
+   <element name="setNoteResponse">
     <complexType>
      <sequence>
-      <element maxOccurs="unbounded" name="getRequestsReturn" type="tns1:UserInfo"/>
+      <element name="setNoteReturn" type="xsd:boolean"/>
      </sequence>
     </complexType>
    </element>
@@ -274,63 +213,126 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
-   <element name="exists">
+   <element name="newUser1">
     <complexType>
      <sequence>
-      <element name="nick" type="xsd:string"/>
+      <element name="ui" type="tns1:UserInfo"/>
+      <element name="pw" type="xsd:string"/>
+      <element name="photo" type="xsd:string"/>
      </sequence>
     </complexType>
    </element>
-   <element name="existsResponse">
+   <element name="newUser1Response">
     <complexType>
      <sequence>
-      <element name="existsReturn" type="xsd:boolean"/>
+      <element name="newUser1Return" type="impl:Auth"/>
      </sequence>
     </complexType>
    </element>
-   <element name="getPositions">
+   <element name="logPosition">
     <complexType>
      <sequence>
       <element name="a" type="impl:Auth"/>
-      <element name="id" type="xsd:int"/>
-      <element name="c" type="xsd:int"/>
+      <element name="p" type="tns1:Position"/>
      </sequence>
     </complexType>
    </element>
-   <element name="getPositionsResponse">
+   <element name="logPositionResponse">
     <complexType>
      <sequence>
-      <element maxOccurs="unbounded" name="getPositionsReturn" type="tns1:Position"/>
+      <element name="logPositionReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="loginWP">
+    <complexType>
+     <sequence>
+      <element name="nick" type="xsd:string"/>
+      <element name="pw" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="loginWPResponse">
+    <complexType>
+     <sequence>
+      <element name="loginWPReturn" type="impl:Auth"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="changeUser">
+    <complexType>
+     <sequence>
+      <element name="a" type="impl:Auth"/>
+      <element name="ui" type="tns1:UserInfo"/>
+      <element name="pw" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="changeUserResponse">
+    <complexType>
+     <sequence>
+      <element name="changeUserReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="myUser">
+    <complexType>
+     <sequence>
+      <element name="a" type="impl:Auth"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="myUserResponse">
+    <complexType>
+     <sequence>
+      <element name="myUserReturn" type="tns1:UserInfo"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="newAdmin">
+    <complexType>
+     <sequence>
+      <element name="a" type="impl:Auth"/>
+      <element name="ui" type="tns1:UserInfo"/>
+      <element name="pw" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="newAdminResponse">
+    <complexType>
+     <sequence>
+      <element name="newAdminReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="newUser">
+    <complexType>
+     <sequence>
+      <element name="ui" type="tns1:UserInfo"/>
+      <element name="pw" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="newUserResponse">
+    <complexType>
+     <sequence>
+      <element name="newUserReturn" type="impl:Auth"/>
      </sequence>
     </complexType>
    </element>
   </schema>
   <schema elementFormDefault="qualified" targetNamespace="http://model" xmlns="http://www.w3.org/2001/XMLSchema">
    <import namespace="http://controller"/>
+   <complexType name="Photo">
+    <sequence>
+     <element name="photo" nillable="true" type="xsd:base64Binary"/>
+    </sequence>
+   </complexType>
    <complexType name="Position">
     <sequence>
      <element name="date" nillable="true" type="xsd:string"/>
      <element name="latitude" nillable="true" type="xsd:string"/>
      <element name="longitude" nillable="true" type="xsd:string"/>
-    </sequence>
-   </complexType>
-   <complexType name="UserInfo">
-    <sequence>
-     <element name="address" nillable="true" type="xsd:string"/>
-     <element name="administrator" type="xsd:boolean"/>
-     <element name="country" nillable="true" type="xsd:string"/>
-     <element name="email" nillable="true" type="xsd:string"/>
-     <element name="id" type="xsd:int"/>
-     <element name="name" nillable="true" type="xsd:string"/>
-     <element name="nick" nillable="true" type="xsd:string"/>
-     <element name="phone" type="xsd:int"/>
-     <element name="position" nillable="true" type="tns1:Position"/>
-     <element name="surname" nillable="true" type="xsd:string"/>
-    </sequence>
-   </complexType>
-   <complexType name="Photo">
-    <sequence>
-     <element name="photo" nillable="true" type="xsd:base64Binary"/>
     </sequence>
    </complexType>
    <complexType name="Note">
@@ -343,20 +345,35 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="position" nillable="true" type="tns1:Position"/>
     </sequence>
    </complexType>
+   <complexType name="UserInfo">
+    <sequence>
+     <element name="address" nillable="true" type="xsd:string"/>
+     <element name="administrator" type="xsd:boolean"/>
+     <element name="country" nillable="true" type="xsd:string"/>
+     <element name="email" nillable="true" type="xsd:string"/>
+     <element name="id" type="xsd:int"/>
+     <element name="name" nillable="true" type="xsd:string"/>
+     <element name="nick" nillable="true" type="xsd:string"/>
+     <element name="phone" type="xsd:int"/>
+     <element name="photo" nillable="true" type="tns1:Photo"/>
+     <element name="position" nillable="true" type="tns1:Position"/>
+     <element name="surname" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
   </schema>
  </wsdl:types>
 
-   <wsdl:message name="existsResponse">
+   <wsdl:message name="myUserResponse">
 
-      <wsdl:part element="impl:existsResponse" name="parameters">
+      <wsdl:part element="impl:myUserResponse" name="parameters">
 
       </wsdl:part>
 
    </wsdl:message>
 
-   <wsdl:message name="myUserResponse">
+   <wsdl:message name="existsResponse">
 
-      <wsdl:part element="impl:myUserResponse" name="parameters">
+      <wsdl:part element="impl:existsResponse" name="parameters">
 
       </wsdl:part>
 
@@ -394,17 +411,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="getUsersResponse">
+   <wsdl:message name="newUserResponse">
 
-      <wsdl:part element="impl:getUsersResponse" name="parameters">
+      <wsdl:part element="impl:newUserResponse" name="parameters">
 
       </wsdl:part>
 
    </wsdl:message>
 
-   <wsdl:message name="newUserResponse">
+   <wsdl:message name="getUsersResponse">
 
-      <wsdl:part element="impl:newUserResponse" name="parameters">
+      <wsdl:part element="impl:getUsersResponse" name="parameters">
 
       </wsdl:part>
 
@@ -421,6 +438,22 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
    <wsdl:message name="setNoteRequest">
 
       <wsdl:part element="impl:setNote" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="newUser1Response">
+
+      <wsdl:part element="impl:newUser1Response" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="newUser1Request">
+
+      <wsdl:part element="impl:newUser1" name="parameters">
 
       </wsdl:part>
 
@@ -578,17 +611,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="getNoteResponse">
+   <wsdl:message name="changeUserResponse">
 
-      <wsdl:part element="impl:getNoteResponse" name="parameters">
+      <wsdl:part element="impl:changeUserResponse" name="parameters">
 
       </wsdl:part>
 
    </wsdl:message>
 
-   <wsdl:message name="changeUserResponse">
+   <wsdl:message name="getNoteResponse">
 
-      <wsdl:part element="impl:changeUserResponse" name="parameters">
+      <wsdl:part element="impl:getNoteResponse" name="parameters">
 
       </wsdl:part>
 
@@ -652,25 +685,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    <wsdl:portType name="FFLocationAPI">
 
-      <wsdl:operation name="getUsers">
+      <wsdl:operation name="exists">
 
-         <wsdl:input message="impl:getUsersRequest" name="getUsersRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:getUsersResponse" name="getUsersResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="login">
-
-         <wsdl:input message="impl:loginRequest" name="loginRequest">
+         <wsdl:input message="impl:existsRequest" name="existsRequest">
 
        </wsdl:input>
 
-         <wsdl:output message="impl:loginResponse" name="loginResponse">
+         <wsdl:output message="impl:existsResponse" name="existsResponse">
 
        </wsdl:output>
 
@@ -688,85 +709,49 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="loginWP">
+      <wsdl:operation name="login">
 
-         <wsdl:input message="impl:loginWPRequest" name="loginWPRequest">
+         <wsdl:input message="impl:loginRequest" name="loginRequest">
 
        </wsdl:input>
 
-         <wsdl:output message="impl:loginWPResponse" name="loginWPResponse">
+         <wsdl:output message="impl:loginResponse" name="loginResponse">
 
        </wsdl:output>
 
       </wsdl:operation>
 
-      <wsdl:operation name="myUser">
+      <wsdl:operation name="getRequests">
 
-         <wsdl:input message="impl:myUserRequest" name="myUserRequest">
+         <wsdl:input message="impl:getRequestsRequest" name="getRequestsRequest">
 
        </wsdl:input>
 
-         <wsdl:output message="impl:myUserResponse" name="myUserResponse">
+         <wsdl:output message="impl:getRequestsResponse" name="getRequestsResponse">
 
        </wsdl:output>
 
       </wsdl:operation>
 
-      <wsdl:operation name="changeUser">
+      <wsdl:operation name="getPositions">
 
-         <wsdl:input message="impl:changeUserRequest" name="changeUserRequest">
+         <wsdl:input message="impl:getPositionsRequest" name="getPositionsRequest">
 
        </wsdl:input>
 
-         <wsdl:output message="impl:changeUserResponse" name="changeUserResponse">
+         <wsdl:output message="impl:getPositionsResponse" name="getPositionsResponse">
 
        </wsdl:output>
 
       </wsdl:operation>
 
-      <wsdl:operation name="newUser">
+      <wsdl:operation name="getUsers">
 
-         <wsdl:input message="impl:newUserRequest" name="newUserRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:newUserResponse" name="newUserResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="newAdmin">
-
-         <wsdl:input message="impl:newAdminRequest" name="newAdminRequest">
+         <wsdl:input message="impl:getUsersRequest" name="getUsersRequest">
 
        </wsdl:input>
 
-         <wsdl:output message="impl:newAdminResponse" name="newAdminResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="logPosition">
-
-         <wsdl:input message="impl:logPositionRequest" name="logPositionRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:logPositionResponse" name="logPositionResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="setNote">
-
-         <wsdl:input message="impl:setNoteRequest" name="setNoteRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:setNoteResponse" name="setNoteResponse">
+         <wsdl:output message="impl:getUsersResponse" name="getUsersResponse">
 
        </wsdl:output>
 
@@ -796,13 +781,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="getRequests">
+      <wsdl:operation name="setNote">
 
-         <wsdl:input message="impl:getRequestsRequest" name="getRequestsRequest">
+         <wsdl:input message="impl:setNoteRequest" name="setNoteRequest">
 
        </wsdl:input>
 
-         <wsdl:output message="impl:getRequestsResponse" name="getRequestsResponse">
+         <wsdl:output message="impl:setNoteResponse" name="setNoteResponse">
 
        </wsdl:output>
 
@@ -856,25 +841,85 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="exists">
+      <wsdl:operation name="newUser1">
 
-         <wsdl:input message="impl:existsRequest" name="existsRequest">
+         <wsdl:input message="impl:newUser1Request" name="newUser1Request">
 
        </wsdl:input>
 
-         <wsdl:output message="impl:existsResponse" name="existsResponse">
+         <wsdl:output message="impl:newUser1Response" name="newUser1Response">
 
        </wsdl:output>
 
       </wsdl:operation>
 
-      <wsdl:operation name="getPositions">
+      <wsdl:operation name="logPosition">
 
-         <wsdl:input message="impl:getPositionsRequest" name="getPositionsRequest">
+         <wsdl:input message="impl:logPositionRequest" name="logPositionRequest">
 
        </wsdl:input>
 
-         <wsdl:output message="impl:getPositionsResponse" name="getPositionsResponse">
+         <wsdl:output message="impl:logPositionResponse" name="logPositionResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="loginWP">
+
+         <wsdl:input message="impl:loginWPRequest" name="loginWPRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:loginWPResponse" name="loginWPResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="changeUser">
+
+         <wsdl:input message="impl:changeUserRequest" name="changeUserRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:changeUserResponse" name="changeUserResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="myUser">
+
+         <wsdl:input message="impl:myUserRequest" name="myUserRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:myUserResponse" name="myUserResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="newAdmin">
+
+         <wsdl:input message="impl:newAdminRequest" name="newAdminRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:newAdminResponse" name="newAdminResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="newUser">
+
+         <wsdl:input message="impl:newUserRequest" name="newUserRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:newUserResponse" name="newUserResponse">
 
        </wsdl:output>
 
@@ -886,35 +931,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
 
-      <wsdl:operation name="getUsers">
+      <wsdl:operation name="exists">
 
          <wsdlsoap:operation soapAction=""/>
 
-         <wsdl:input name="getUsersRequest">
+         <wsdl:input name="existsRequest">
 
             <wsdlsoap:body use="literal"/>
 
          </wsdl:input>
 
-         <wsdl:output name="getUsersResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="login">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="loginRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="loginResponse">
+         <wsdl:output name="existsResponse">
 
             <wsdlsoap:body use="literal"/>
 
@@ -940,17 +967,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="loginWP">
+      <wsdl:operation name="login">
 
          <wsdlsoap:operation soapAction=""/>
 
-         <wsdl:input name="loginWPRequest">
+         <wsdl:input name="loginRequest">
 
             <wsdlsoap:body use="literal"/>
 
          </wsdl:input>
 
-         <wsdl:output name="loginWPResponse">
+         <wsdl:output name="loginResponse">
 
             <wsdlsoap:body use="literal"/>
 
@@ -958,17 +985,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="myUser">
+      <wsdl:operation name="getRequests">
 
          <wsdlsoap:operation soapAction=""/>
 
-         <wsdl:input name="myUserRequest">
+         <wsdl:input name="getRequestsRequest">
 
             <wsdlsoap:body use="literal"/>
 
          </wsdl:input>
 
-         <wsdl:output name="myUserResponse">
+         <wsdl:output name="getRequestsResponse">
 
             <wsdlsoap:body use="literal"/>
 
@@ -976,17 +1003,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="changeUser">
+      <wsdl:operation name="getPositions">
 
          <wsdlsoap:operation soapAction=""/>
 
-         <wsdl:input name="changeUserRequest">
+         <wsdl:input name="getPositionsRequest">
 
             <wsdlsoap:body use="literal"/>
 
          </wsdl:input>
 
-         <wsdl:output name="changeUserResponse">
+         <wsdl:output name="getPositionsResponse">
 
             <wsdlsoap:body use="literal"/>
 
@@ -994,71 +1021,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="newUser">
+      <wsdl:operation name="getUsers">
 
          <wsdlsoap:operation soapAction=""/>
 
-         <wsdl:input name="newUserRequest">
+         <wsdl:input name="getUsersRequest">
 
             <wsdlsoap:body use="literal"/>
 
          </wsdl:input>
 
-         <wsdl:output name="newUserResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="newAdmin">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="newAdminRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="newAdminResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="logPosition">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="logPositionRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="logPositionResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="setNote">
-
-         <wsdlsoap:operation soapAction=""/>
-
-         <wsdl:input name="setNoteRequest">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:input>
-
-         <wsdl:output name="setNoteResponse">
+         <wsdl:output name="getUsersResponse">
 
             <wsdlsoap:body use="literal"/>
 
@@ -1102,17 +1075,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="getRequests">
+      <wsdl:operation name="setNote">
 
          <wsdlsoap:operation soapAction=""/>
 
-         <wsdl:input name="getRequestsRequest">
+         <wsdl:input name="setNoteRequest">
 
             <wsdlsoap:body use="literal"/>
 
          </wsdl:input>
 
-         <wsdl:output name="getRequestsResponse">
+         <wsdl:output name="setNoteResponse">
 
             <wsdlsoap:body use="literal"/>
 
@@ -1192,17 +1165,17 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="exists">
+      <wsdl:operation name="newUser1">
 
          <wsdlsoap:operation soapAction=""/>
 
-         <wsdl:input name="existsRequest">
+         <wsdl:input name="newUser1Request">
 
             <wsdlsoap:body use="literal"/>
 
          </wsdl:input>
 
-         <wsdl:output name="existsResponse">
+         <wsdl:output name="newUser1Response">
 
             <wsdlsoap:body use="literal"/>
 
@@ -1210,17 +1183,107 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-      <wsdl:operation name="getPositions">
+      <wsdl:operation name="logPosition">
 
          <wsdlsoap:operation soapAction=""/>
 
-         <wsdl:input name="getPositionsRequest">
+         <wsdl:input name="logPositionRequest">
 
             <wsdlsoap:body use="literal"/>
 
          </wsdl:input>
 
-         <wsdl:output name="getPositionsResponse">
+         <wsdl:output name="logPositionResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="loginWP">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="loginWPRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="loginWPResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="changeUser">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="changeUserRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="changeUserResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="myUser">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="myUserRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="myUserResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="newAdmin">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="newAdminRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="newAdminResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="newUser">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="newUserRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="newUserResponse">
 
             <wsdlsoap:body use="literal"/>
 
@@ -1234,7 +1297,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       <wsdl:port binding="impl:FFLocationAPISoapBinding" name="FFLocationAPI">
 
-         <wsdlsoap:address location="http://localhost:8080/fflServer/services/FFLocationAPI"/>
+         <wsdlsoap:address location="http://localhost:2720/fflServer/services/FFLocationAPI"/>
 
       </wsdl:port>
 

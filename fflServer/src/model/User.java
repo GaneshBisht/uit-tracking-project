@@ -31,6 +31,7 @@ public class User extends UserInfo{
     	setAdministrator(ui.isAdministrator());
     	setPhone(ui.getPhone());
     	setSurname(ui.getSurname());
+    	setPhoto(ui.getPhoto());
 	}
 
 	public void setPassword(String password) {
