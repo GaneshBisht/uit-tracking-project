@@ -118,20 +118,10 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 		setContentView(R.layout.map);
 
 		tvDistanceDuration = (TextView) findViewById(R.id.tv_distance_time);
-
-		// Getting reference to rb_driving
 		rbDriving = (RadioButton) findViewById(R.id.rb_driving);
-
-		// Getting reference to rb_bicylcing
 		rbBiCycling = (RadioButton) findViewById(R.id.rb_bicycling);
-
-		// Getting reference to rb_walking
 		rbWalking = (RadioButton) findViewById(R.id.rb_walking);
-
-		// Getting Reference to rg_modes
 		rgModes = (RadioGroup) findViewById(R.id.rg_modes);
-
-		// Getting reference to Button
 		Button btnDraw = (Button) findViewById(R.id.btn_draw);
 
 		m_locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -154,56 +144,33 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-				// Checks, whether start and end locations are captured
 				if (markerPoints.size() >= 2) {
 					LatLng origin = markerPoints.get(0);
 					LatLng dest = markerPoints.get(1);
-
-					// Getting URL to the Google Directions API
 					String url = getDirectionsUrl(origin, dest);
-
 					DownloadTask downloadTask = new DownloadTask();
-
-					// Start downloading json data from Google Directions API
 					downloadTask.execute(url);
 				}
 			}
 		});
 
-		// Initializing
 		markerPoints = new ArrayList<LatLng>();
 
 		if (m_map != null) {
 
-			// Setting onclick event listener for the map
 			m_map.setOnMapClickListener(new OnMapClickListener() {
 
 				@Override
 				public void onMapClick(LatLng point) {
-
-					// Already two locations
 					if (markerPoints.size() > 1) {
 						markerPoints.clear();
 						m_map.clear();
-						// return;
 					}
-
-					// Adding new item to the ArrayList
 					markerPoints.add(point);
-
-					// Draws Start and Stop markers on the Google Map
 					drawStartStopMarkers();
-
-					// Creating MarkerOptions
 					MarkerOptions options = new MarkerOptions();
-
-					// Setting the position of the marker
 					options.position(point);
 
-					/**
-					 * For the start location, the color of marker is GREEN and for the end location, the color of marker is RED.
-					 */
 					if (markerPoints.size() == 1) {
 						options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 					} else if (markerPoints.size() == 2) {
@@ -212,28 +179,19 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 						options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 					}
 
-					// Add new marker to the Google Map Android API V2
 					m_map.addMarker(options);
 
-					// Checks, whether start and end locations are captured
 					if (markerPoints.size() >= 2) {
 						LatLng origin = markerPoints.get(0);
 						LatLng dest = markerPoints.get(1);
-
-						// Getting URL to the Google Directions API
 						String url = getDirectionsUrl(origin, dest);
-
 						DownloadTask downloadTask = new DownloadTask();
-
-						// Start downloading json data from Google Directions
-						// API
 						downloadTask.execute(url);
 					}
 
 				}
 			});
 
-			// Click event handler for Button btn_draw
 			btnDraw.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -241,32 +199,20 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 					if (markerPoints.size() >= 2) {
 						LatLng origin = markerPoints.get(0);
 						LatLng dest = markerPoints.get(1);
-						final Intent intent = new Intent(Intent.ACTION_VIEW,
-						/** Using the web based turn by turn directions url. */
-						Uri.parse("http://maps.google.com/maps?" + "saddr=" + origin.latitude + "," + origin.longitude + "&daddr=" + dest.latitude + ","
-								+ dest.longitude));
-						/**
-						 * Setting the Class Name that should handle this intent. We are setting the class name to the class name of the native maps activity.
-						 * Android platform recognizes this and now knows that we want to open up the Native Maps application to handle the URL. Hence it does
-						 * not give the choice of application to the user and directly opens the Native Google Maps application.
-						 */
+						final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?" + "saddr=" + origin.latitude + ","
+								+ origin.longitude + "&daddr=" + dest.latitude + "," + dest.longitude));
 						intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
 						startActivity(intent);
-						// Checks, whether start and end locations are captured
 					}
 
 				}
 			});
 
-			// The map will be cleared on long click
 			m_map.setOnMapLongClickListener(new OnMapLongClickListener() {
 
 				@Override
 				public void onMapLongClick(LatLng point) {
-					// Removes all the points from Google Map
 					m_map.clear();
-
-					// Removes all the points in the ArrayList
 					markerPoints.clear();
 
 				}
@@ -456,70 +402,44 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 			if (!gr.isGroup()) {
 				if (gr.hasPhoto()) {
 					// canvas.drawBitmap(photoIcon, screenCoords.x - photoIcon.getWidth() / 2, screenCoords.y - photoIcon.getHeight(), null);
-					Marker marker = m_map.addMarker(new MarkerOptions().position(new LatLng(ma.getPosition().latitude, ma.getPosition().longitude))
-							.title(ma.getTitle()).snippet(ma.getSnippet()).icon(BitmapDescriptorFactory.fromResource(R.drawable.photoicon)));
+					m_map.addMarker(new MarkerOptions().position(new LatLng(ma.getPosition().latitude, ma.getPosition().longitude)).title(ma.getTitle())
+							.snippet(ma.getSnippet()).icon(BitmapDescriptorFactory.fromResource(R.drawable.photoicon)));
 				} else {
-					Marker marker = m_map.addMarker(new MarkerOptions()
-							.position(new LatLng(gr.getPosition().getLatitudeFloat(), gr.getPosition().getLongitudeFloat())).title(gr.getName())
-							.icon(BitmapDescriptorFactory.fromResource(R.drawable.note)));
+					m_map.addMarker(new MarkerOptions().position(new LatLng(gr.getPosition().getLatitudeFloat(), gr.getPosition().getLongitudeFloat()))
+							.title(gr.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.note)));
 
 				}
 			} else {
-				Marker marker = m_map.addMarker(new MarkerOptions()
-						.position(new LatLng(gr.getPosition().getLatitudeFloat(), gr.getPosition().getLongitudeFloat())).title(gr.getName())
-						.icon(BitmapDescriptorFactory.fromResource(R.drawable.photosicon)));
+				m_map.addMarker(new MarkerOptions().position(new LatLng(gr.getPosition().getLatitudeFloat(), gr.getPosition().getLongitudeFloat()))
+						.title(gr.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.photosicon)));
 			}
 
 			// drawMessageWindow(gr, canvas, mapView);
 		}
 	}
 
-	// Drawing Start and Stop locations
 	private void drawStartStopMarkers() {
 
 		for (int i = 0; i < markerPoints.size(); i++) {
-
-			// Creating MarkerOptions
 			MarkerOptions options = new MarkerOptions();
-
-			// Setting the position of the marker
 			options.position(markerPoints.get(i));
-
-			/**
-			 * For the start location, the color of marker is GREEN and for the end location, the color of marker is RED.
-			 */
 			if (i == 0) {
 				options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 			} else if (i == 1) {
 				options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 			}
-
-			// Add new marker to the Google Map Android API V2
 			m_map.addMarker(options);
 		}
 	}
 
 	private String getDirectionsUrl(LatLng origin, LatLng dest) {
 
-		// Origin of route
 		String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
 
-		// Destination of route
 		String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
 
-		// Sensor enabled
 		String sensor = "sensor=false";
 
-		// Waypoints
-		// String waypoints = "";
-		// for (int i = 2; i < markerPoints.size(); i++) {
-		// LatLng point = (LatLng) markerPoints.get(i);
-		// if (i == 2)
-		// waypoints = "waypoints=";
-		// waypoints += point.latitude + "," + point.longitude + "|";
-		// }
-
-		// Travelling Mode
 		String mode = "mode=driving";
 
 		if (rbDriving.isChecked()) {
@@ -533,19 +453,15 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 			mMode = 2;
 		}
 
-		// Building the parameters to the web service
 		String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + mode;
 
-		// Output format
 		String output = "json";
 
-		// Building the url to the web service
 		String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
 
 		return url;
 	}
 
-	/** A method to download json data from url */
 	private String downloadUrl(String strUrl) throws IOException {
 		String data = "";
 		InputStream iStream = null;
@@ -553,13 +469,10 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 		try {
 			URL url = new URL(strUrl);
 
-			// Creating an http connection to communicate with url
 			urlConnection = (HttpURLConnection) url.openConnection();
 
-			// Connecting to url
 			urlConnection.connect();
 
-			// Reading data from url
 			iStream = urlConnection.getInputStream();
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
@@ -584,18 +497,13 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 		return data;
 	}
 
-	// Fetches data from url passed
 	private class DownloadTask extends AsyncTask<String, Void, String> {
 
-		// Downloading data in non-ui thread
 		@Override
 		protected String doInBackground(String... url) {
 
-			// For storing data from web service
 			String data = "";
-
 			try {
-				// Fetching the data from web service
 				data = downloadUrl(url[0]);
 			} catch (Exception e) {
 				Log.d("Background Task", e.toString());
@@ -603,24 +511,16 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 			return data;
 		}
 
-		// Executes in UI thread, after the execution of
-		// doInBackground()
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-
 			ParserTask parserTask = new ParserTask();
-
-			// Invokes the thread for parsing the JSON data
 			parserTask.execute(result);
-
 		}
 	}
 
-	/** A class to parse the Google Places in JSON format */
 	private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
 
-		// Parsing the data in non-ui thread
 		@Override
 		protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
 
@@ -630,8 +530,6 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 			try {
 				jObject = new JSONObject(jsonData[0]);
 				DirectionsJSONParser parser = new DirectionsJSONParser();
-
-				// Starts parsing data
 				routes = parser.parse(jObject);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -639,7 +537,6 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 			return routes;
 		}
 
-		// Executes in UI thread, after the parsing process
 		@Override
 		protected void onPostExecute(List<List<HashMap<String, String>>> result) {
 			ArrayList<LatLng> points = null;
@@ -653,22 +550,19 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 				return;
 			}
 
-			// Traversing through all the routes
 			for (int i = 0; i < result.size(); i++) {
 				points = new ArrayList<LatLng>();
 				lineOptions = new PolylineOptions();
 
-				// Fetching i-th route
 				List<HashMap<String, String>> path = result.get(i);
 
-				// Fetching all the points in i-th route
 				for (int j = 0; j < path.size(); j++) {
 					HashMap<String, String> point = path.get(j);
 
-					if (j == 0) { // Get distance from the list
+					if (j == 0) {
 						distance = (String) point.get("distance");
 						continue;
-					} else if (j == 1) { // Get duration from the list
+					} else if (j == 1) {
 						duration = (String) point.get("duration");
 						continue;
 					}
@@ -680,11 +574,9 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 					points.add(position);
 				}
 
-				// Adding all the points in the route to LineOptions
 				lineOptions.addAll(points);
 				lineOptions.width(2);
 
-				// Changing the color polyline according to the mode
 				if (mMode == MODE_DRIVING)
 					lineOptions.color(Color.RED);
 				else if (mMode == MODE_BICYCLING)
@@ -695,10 +587,7 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 			}
 
 			tvDistanceDuration.setText("Distance:" + distance + ", Duration:" + duration);
-
-			// Drawing polyline in the Google Map for the i-th route
 			m_map.addPolyline(lineOptions);
 		}
 	}
-
 }
