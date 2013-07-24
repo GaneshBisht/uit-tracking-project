@@ -289,6 +289,8 @@ public class ToServer {
 		envelope.addMapping("http://controller", "KUserInfo", KUserInfo.class);
 
 		envelope.addMapping("http://controller", "KPosition", KPosition.class);
+		
+		envelope.addMapping("http://controller", "KPhoto", KPhoto.class);
 
 		HttpTransportSE transport = new HttpTransportSE(URL);
 

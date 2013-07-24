@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
@@ -8,43 +9,43 @@
         android:id="@+id/tv_distance_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" 
-        android:layout_alignParentTop="true" />
-    
-    
+        android:layout_alignParentTop="true"
+        android:text="@string/hello_world" />
+
     <RadioGroup
-        android:id="@+id/rg_modes" 
+        android:id="@+id/rg_modes"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
-        
-        <RadioButton android:id="@+id/rb_driving"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/rb_driving"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:text="@string/str_rb_driving"
-            android:checked="true" />
-        
-        <RadioButton android:id="@+id/rb_bicycling"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/str_rb_driving" />
+
+        <RadioButton
+            android:id="@+id/rb_bicycling"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
+            android:layout_height="wrap_content"
             android:text="@string/str_rb_bicycling" />
-        
-        <RadioButton android:id="@+id/rb_walking"
+
+        <RadioButton
+            android:id="@+id/rb_walking"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
+            android:layout_height="wrap_content"
             android:text="@string/str_rb_walking" />
-        
-        
     </RadioGroup>
-    
-    <fragment 
+
+    <fragment
         android:id="@+id/map"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"        
-        class="com.google.android.gms.maps.SupportMapFragment" 
+        android:layout_height="wrap_content"
         android:layout_above="@id/rg_modes"
-        android:layout_below="@id/tv_distance_time"/>
+        android:layout_below="@id/tv_distance_time"
+        class="com.google.android.gms.maps.SupportMapFragment" />
 
     <Button
         android:id="@+id/btn_draw"
