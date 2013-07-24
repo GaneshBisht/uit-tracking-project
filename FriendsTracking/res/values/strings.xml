@@ -3,19 +3,19 @@
 
     <string name="app_name">FriendsTracking</string>
     <string name="action_settings">Settings</string>
-
-    <string name="IP">192.168.0.113</string>
+    <string name="IP">42.116.152.197</string>
     <string name="loading_title">Loading…</string>
-	<string name="loading_message">Loading… Please wait</string>
-	<string name="find_friend">Find a friend</string>
-	<string name="name">Name:</string>
-	<string name="surname">Surname:</string>
-	<string name="country">Country:</string>
-	<string name="nick">Nick:</string>
-	<string name="search">Search</string>
-	<string name="cancel">Cancel</string>
-	
-	<string name="hello_world">Tap two locations in the map</string>
+    <string name="loading_message">Loading… Please wait</string>
+    <string name="find_friend">Find a friend</string>
+    <string name="name">Name:</string>
+    <string name="surname">Surname:</string>
+    <string name="country">Country:</string>
+    <string name="nick">Nick:</string>
+    <string name="search">Search</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="takePhoto">Take Photo</string>
+    <string name="hello_world">Tap two locations in the map</string>
     <string name="str_tv_distance_time">Distance</string>
     <string name="str_rb_driving">Driving</string>
     <string name="str_rb_bicycling">BiCycling</string>

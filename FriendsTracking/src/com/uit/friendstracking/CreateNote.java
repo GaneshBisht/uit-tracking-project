@@ -1,119 +1,95 @@
 package com.uit.friendstracking;
 
+import java.io.ByteArrayOutputStream;
+
 import android.app.Activity;
-import android.content.Context;
-import android.hardware.Camera;
-import android.hardware.Camera.PictureCallback;
-import android.location.LocationManager;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.uit.friendstracking.camera.CameraPreview;
 import com.uit.friendstracking.listeners.GPSListener;
 import com.uit.friendstracking.models.KPhoto;
 import com.uit.friendstracking.models.KUserInfo;
 import com.uit.friendstracking.tasks.GetMyUserAsyncTask;
 import com.uit.friendstracking.tasks.SetNoteAsyncTask;
-import com.uit.friendstracking.webservices.ToServer;
 
-public class CreateNote extends Activity implements OnClickListener {
+public class CreateNote extends Activity {
 
-	private Camera camera;
-	private CameraPreview preview;
-	private Button buttonTakePhoto, buttonSave, buttonCancel, buttonAgain;
-	private byte[] currentPhoto = null;
+	private static final int CAMERA_REQUEST = 1888;
+	private ImageView m_imageView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.camera);
+		m_imageView = (ImageView) this.findViewById(R.id.imageView1);
 
-		preview = new CameraPreview(this);
-		((FrameLayout) findViewById(R.id.camera_preview)).addView(preview);
+		Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+		startActivityForResult(cameraIntent, CAMERA_REQUEST);
+	}
 
-		// Fit the GUI elements to variables.
-		buttonTakePhoto = (Button) findViewById(R.id.camera_bTakePhoto);
-		buttonTakePhoto.setOnClickListener(this);
-		buttonAgain = (Button) findViewById(R.id.camera_bTryAgain);
-		buttonAgain.setOnClickListener(this);
-		buttonAgain.setEnabled(false);
-		buttonAgain.setVisibility(4);
-		buttonSave = (Button) findViewById(R.id.camera_bSave);
-		buttonSave.setOnClickListener(this);
-		buttonCancel = (Button) findViewById(R.id.camera_bCancel);
-		buttonCancel.setOnClickListener(this);
-
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+			Bitmap photo = (Bitmap) data.getExtras().get("data");
+			m_imageView.setImageBitmap(photo);
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override
-	public void onClick(View v) {
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_create_note, menu);
+		return true;
+	}
 
-		// Know what is the press button
-		Button sourceButton = (Button) v;
-
-		// If the user press the take photo button.
-		if (sourceButton == this.buttonTakePhoto) {
-
-			// Take the picture
-			preview.getCamera().takePicture(null, null, jpegCallback);
-
-			// Enable the button again
-			buttonAgain.setEnabled(true);
-			buttonAgain.setVisibility(0);
-
-			// Hide the button take photo
-			buttonTakePhoto.setEnabled(false);
-			buttonTakePhoto.setVisibility(4);
-		}
-
-		// If the user press the button save
-		else if (sourceButton == this.buttonSave) {
-			// If the user took a photo
-			if (currentPhoto != null) {
-				// Gets the comment
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.take_photo:
+			Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+			startActivityForResult(cameraIntent, CAMERA_REQUEST);
+			break;
+		case R.id.save:
+			Bitmap bitmap = ((BitmapDrawable) m_imageView.getDrawable()).getBitmap();
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+			byte[] bitmapdata = stream.toByteArray();
+			if (bitmapdata != null) {
 				EditText comment = (EditText) findViewById(R.id.camera_tComment);
 				String com = comment.getText().toString();
 				if (com == null)
 					com = "";
 				try {
+
 					KPhoto photo = new KPhoto();
-					photo.setPhoto(currentPhoto);
+					photo.setPhoto(bitmapdata);
 					KUserInfo user = new GetMyUserAsyncTask().execute().get();
 					boolean success;
 
-					// Activate the gps
-					LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-					GPSListener locationListener = new GPSListener(this);
-					locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+					GPSListener locationListener = new GPSListener(2);
 
-					// Store the photo in the database
-					// If the GPS has detected new position
 					if (locationListener.hasPosition()) {
 						success = new SetNoteAsyncTask(this, locationListener.getCurrentLatitude(), locationListener.getCurrentLongitude(), com, photo)
 								.execute().get();
 
-					}
-					// If the GPS does not detected new position we use the last user's postion.
-					else {
+					} else {
 						if (user.getPosition() != null) {
-							success = new SetNoteAsyncTask(this, user.getPosition().getLatitudeFloat(), user.getPosition().getLongitudeFloat(), com, photo).execute().get();
-						} else
+							success = new SetNoteAsyncTask(this, user.getPosition().getLatitudeFloat(), user.getPosition().getLongitudeFloat(), com, photo)
+									.execute().get();
+						} else {
 							success = false;
+						}
 					}
-					// If the photo has been stored succesfully
 					if (success) {
 						Toast.makeText(getApplicationContext(), "The photo has been saved sucesfully.", Toast.LENGTH_LONG).show();
-					}
-
-					// If there was a problem saving the picture.
-					else {
+					} else {
 						Toast.makeText(getApplicationContext(), "Sorry, but the photo was not saved correctly.", Toast.LENGTH_LONG).show();
 					}
 
@@ -121,37 +97,10 @@ public class CreateNote extends Activity implements OnClickListener {
 					Toast.makeText(getApplicationContext(), "Error: The photo was not saved correctly.\n" + e.getMessage(), Toast.LENGTH_LONG).show();
 				}
 			}
+			break;
+		default:
+			break;
 		}
-
-		// If the user press the button cancel
-		else if (sourceButton == this.buttonCancel) {
-			// finish this activity
-			this.finish();
-		}
-
-		// If the user press the button again
-		else if (sourceButton == this.buttonAgain) {
-
-			// Set disabled the button again
-			buttonAgain.setEnabled(false);
-			buttonAgain.setVisibility(4);
-
-			// Set enabled the button take picture
-			buttonTakePhoto.setEnabled(true);
-			buttonTakePhoto.setVisibility(0);
-
-			// Start new preview
-			preview.getCamera().startPreview();
-
-		}
+		return true;
 	}
-
-	PictureCallback jpegCallback = new PictureCallback() {
-
-		// Store the photo
-		public void onPictureTaken(byte[] data, Camera camera) {
-			currentPhoto = data;
-		}
-	};
-
 }

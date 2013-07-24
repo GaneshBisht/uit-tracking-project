@@ -1,20 +1,20 @@
 package com.uit.friendstracking.listeners;
 
-import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import com.uit.friendstracking.webservices.ToServer;
+import com.uit.friendstracking.tasks.LogPositionAsyncTask;
 
 public class GPSListener implements LocationListener {
 
 	private static Location m_currentLocation = null;
-	private Context m_context;
+	private int m_mode;
+	private long m_lastUpdateMine = 0;
+	private final static int DELTA_TIME = 10000;
 
-	public GPSListener(Context ctx) {
-		this.m_context = ctx;
+	public GPSListener(int mode) {
+		this.m_mode = mode;
 	}
 
 	public void setCurrentLocation(Location location) {
@@ -28,20 +28,21 @@ public class GPSListener implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location location) {
-		if (location != null) {
-			setCurrentLocation(location);
-			try {
-				boolean succesfully = ToServer.logPosition((float) (location.getLongitude()), (float) (location.getLatitude()));
-				if (succesfully) {
-					Toast.makeText(m_context, "The position has been updated succesfully.", Toast.LENGTH_LONG).show();
-				} else {
-					Toast.makeText(m_context, "Failed to update the position.", Toast.LENGTH_LONG).show();
-				}
-			} catch (Exception e) {
-				Toast.makeText(m_context, "Failed to update the position: " + e.getMessage(), Toast.LENGTH_LONG).show();
-
+		if (m_mode == 1) {
+			long currentTime = System.currentTimeMillis();
+			long deltaTime = currentTime - m_lastUpdateMine;
+			if (deltaTime >= DELTA_TIME) {
+				m_lastUpdateMine = currentTime;
+				double curLat = location.getLatitude();
+				double curLng = location.getLongitude();
+				new LogPositionAsyncTask(Float.parseFloat("" + curLng), Float.parseFloat("" + curLat)).execute();
+			}
+		} else if (m_mode == 2) {
+			if (location != null) {
+				setCurrentLocation(location);
 			}
 		}
+
 	}
 
 	@Override
