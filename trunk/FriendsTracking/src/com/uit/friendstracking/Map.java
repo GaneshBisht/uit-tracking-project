@@ -57,9 +57,11 @@ import com.uit.friendstracking.listeners.GPSListener;
 import com.uit.friendstracking.models.Group;
 import com.uit.friendstracking.models.Groups;
 import com.uit.friendstracking.models.KNote;
+import com.uit.friendstracking.models.KPhoto;
 import com.uit.friendstracking.models.KPosition;
 import com.uit.friendstracking.models.KUserInfo;
 import com.uit.friendstracking.tasks.GetFriendsAsyncTask;
+import com.uit.friendstracking.tasks.GetNoteAsyncTask;
 import com.uit.friendstracking.tasks.GetNotesAsyncTask;
 import com.uit.friendstracking.tasks.GetPositionAsyncTask;
 import com.uit.friendstracking.tasks.GetRequestsAsyncTask;
@@ -72,6 +74,7 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 	protected LocationManager m_locationManager;
 	private String m_provider;
 	private java.util.Map<Marker, KUserInfo> m_mapUserMarker = new HashMap<Marker, KUserInfo>();
+	private java.util.Map<Marker, Group> m_mapNoteMarker = new HashMap<Marker, Group>();
 	private long m_lastUpdateFriends = 0;
 	private final static int DELTA_TIME = 10000;
 	private Groups groups;
@@ -344,6 +347,9 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 	@Override
 	public boolean onMarkerClick(Marker arg0) {
 		if (m_mapUserMarker.containsKey(arg0)) {
+			for (Marker marker : m_mapUserMarker.keySet()) {
+				marker.remove();
+			}
 			double gradesPerPixel = getGradesPerPixel();
 
 			// Calculate the grades which the icon on the map.
@@ -359,6 +365,27 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 			} catch (ExecutionException e) {
 				e.printStackTrace();
 			}
+		} else if (m_mapNoteMarker.containsKey(arg0)) {
+			Intent newIntent = new Intent(this, PhotoGallery.class);
+			PhotoGallery.selectedGroup = m_mapNoteMarker.get(arg0);
+			List<KNote> listNotes = new ArrayList<KNote>();
+			try {
+				Iterator<KNote> it = PhotoGallery.selectedGroup.iterator();
+				while (it.hasNext()) {
+					KNote note = (KNote) it.next();
+					KNote kNote = new GetNoteAsyncTask(note.getId()).execute().get();
+					if (kNote != null) {
+						listNotes.add(kNote);
+					}
+
+				}
+			} catch (Exception e) {
+				Toast.makeText(getApplicationContext(), "Failed while trying to read photos: " + e.getMessage(), Toast.LENGTH_LONG).show();
+			}
+			//Bundle bundle = new Bundle();
+			//bundle.putSerializable("asd", listNotes);
+			PhotoGallery.listNotes = listNotes;
+			this.startActivityForResult(newIntent, 0);
 		}
 		return false;
 	}
@@ -392,28 +419,26 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 
 	private void drawNotesMarker(Marker ma, Groups grps) {
 
-		Point screenCoords = new Point();
 		Iterator<Group> it = grps.iterator();
 
 		while (it.hasNext()) {
 			Group gr = it.next();
-			// mapView.getProjection().toPixels(gr.getPosition().get, screenCoords);
-
+			Marker marker;
 			if (!gr.isGroup()) {
 				if (gr.hasPhoto()) {
-					// canvas.drawBitmap(photoIcon, screenCoords.x - photoIcon.getWidth() / 2, screenCoords.y - photoIcon.getHeight(), null);
-					m_map.addMarker(new MarkerOptions().position(new LatLng(ma.getPosition().latitude, ma.getPosition().longitude)).title(ma.getTitle())
-							.snippet(ma.getSnippet()).icon(BitmapDescriptorFactory.fromResource(R.drawable.photoicon)));
+					marker = m_map.addMarker(new MarkerOptions()
+							.position(new LatLng(gr.getPosition().getLatitudeFloat(), gr.getPosition().getLongitudeFloat())).title(gr.getName())
+							.icon(BitmapDescriptorFactory.fromResource(R.drawable.photoicon)));
 				} else {
-					m_map.addMarker(new MarkerOptions().position(new LatLng(gr.getPosition().getLatitudeFloat(), gr.getPosition().getLongitudeFloat()))
-							.title(gr.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.note)));
-
+					marker = m_map.addMarker(new MarkerOptions()
+							.position(new LatLng(gr.getPosition().getLatitudeFloat(), gr.getPosition().getLongitudeFloat())).title(gr.getName())
+							.icon(BitmapDescriptorFactory.fromResource(R.drawable.note)));
 				}
 			} else {
-				m_map.addMarker(new MarkerOptions().position(new LatLng(gr.getPosition().getLatitudeFloat(), gr.getPosition().getLongitudeFloat()))
+				marker = m_map.addMarker(new MarkerOptions().position(new LatLng(gr.getPosition().getLatitudeFloat(), gr.getPosition().getLongitudeFloat()))
 						.title(gr.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.photosicon)));
 			}
-
+			m_mapNoteMarker.put(marker, gr);
 			// drawMessageWindow(gr, canvas, mapView);
 		}
 	}
