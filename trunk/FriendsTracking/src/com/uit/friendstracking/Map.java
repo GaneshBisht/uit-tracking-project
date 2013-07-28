@@ -368,7 +368,7 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 		} else if (m_mapNoteMarker.containsKey(arg0)) {
 			Intent newIntent = new Intent(this, PhotoGallery.class);
 			PhotoGallery.selectedGroup = m_mapNoteMarker.get(arg0);
-			List<KNote> listNotes = new ArrayList<KNote>();
+			/*List<KNote> listNotes = new ArrayList<KNote>();
 			try {
 				Iterator<KNote> it = PhotoGallery.selectedGroup.iterator();
 				while (it.hasNext()) {
@@ -384,7 +384,7 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 			}
 			//Bundle bundle = new Bundle();
 			//bundle.putSerializable("asd", listNotes);
-			PhotoGallery.listNotes = listNotes;
+			PhotoGallery.listNotes = listNotes;*/
 			this.startActivityForResult(newIntent, 0);
 		}
 		return false;
