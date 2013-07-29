@@ -61,7 +61,6 @@ import com.uit.friendstracking.models.KPhoto;
 import com.uit.friendstracking.models.KPosition;
 import com.uit.friendstracking.models.KUserInfo;
 import com.uit.friendstracking.tasks.GetFriendsAsyncTask;
-import com.uit.friendstracking.tasks.GetNoteAsyncTask;
 import com.uit.friendstracking.tasks.GetNotesAsyncTask;
 import com.uit.friendstracking.tasks.GetPositionAsyncTask;
 import com.uit.friendstracking.tasks.GetRequestsAsyncTask;
@@ -287,6 +286,11 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 		int id = item.getItemId();
 
 		switch (id) {
+
+		case R.id.find_route:
+			Intent routeIntent = new Intent(this, FindRoute.class);
+			this.startActivityForResult(routeIntent, 0);
+			return true;
 
 		case R.id.take_photo:
 			Intent noteIntent = new Intent(this, CreateNote.class);

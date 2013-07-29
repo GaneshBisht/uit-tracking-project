@@ -58,6 +58,7 @@
         <activity android:name="com.uit.friendstracking.CreateNote" />
         <activity android:name="com.uit.friendstracking.UserInformation" />
         <activity android:name="com.uit.friendstracking.PhotoGallery" />
+        <activity android:name="com.uit.friendstracking.FindRoute" />
     </application>
 
 </manifest>
