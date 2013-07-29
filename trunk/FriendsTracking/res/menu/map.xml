@@ -17,4 +17,5 @@
         android:id="@+id/exit"
         android:title="Logout"/>
 
+		<item android:id="@+id/find_route" android:title="Find Route" />
 </menu>
