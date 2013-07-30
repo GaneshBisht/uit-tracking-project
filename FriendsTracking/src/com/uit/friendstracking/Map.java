@@ -61,6 +61,7 @@ import com.uit.friendstracking.models.KPhoto;
 import com.uit.friendstracking.models.KPosition;
 import com.uit.friendstracking.models.KUserInfo;
 import com.uit.friendstracking.tasks.GetFriendsAsyncTask;
+import com.uit.friendstracking.tasks.GetMyUserAsyncTask;
 import com.uit.friendstracking.tasks.GetNotesAsyncTask;
 import com.uit.friendstracking.tasks.GetPositionAsyncTask;
 import com.uit.friendstracking.tasks.GetRequestsAsyncTask;
@@ -87,6 +88,8 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 	RadioButton rbBiCycling;
 	RadioButton rbWalking;
 	RadioGroup rgModes;
+	
+	private Bitmap currentAvatar= null;
 
 	int mMode = 0;
 	final int MODE_DRIVING = 0;
@@ -222,12 +225,55 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 		}
 	}
 
+	KUserInfo user = null;
 	private void drawFriendsMarker(long currentTime) {
 		m_lastUpdateFriends = currentTime;
 		for (Marker marker : m_mapUserMarker.keySet()) {
 			marker.remove();
 		}
 		try {
+			
+			
+			if(user == null)
+			{
+				try {
+					user = new GetMyUserAsyncTask().execute().get();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else
+			{
+				try {
+					Location location = m_locationManager.getLastKnownLocation(m_provider);
+					if (location != null && user != null && currentAvatar == null) {
+						double curLat = location.getLatitude();
+						double curLng = location.getLongitude();
+						byte[] b = user.getPhoto().getPhoto();
+						currentAvatar = BitmapFactory.decodeByteArray(b, 0, b.length);
+						currentAvatar= Bitmap.createScaledBitmap(currentAvatar, 70, 90, true);
+						Marker marker = m_map.addMarker(new MarkerOptions()
+							.position(new LatLng(curLat, curLng)).title(user.getNick())
+							.snippet(user.getPosition().toString()).icon(BitmapDescriptorFactory.fromBitmap(currentAvatar)));
+						 m_mapUserMarker.put(marker, user);
+					}
+					else {
+						double curLat = location.getLatitude();
+						double curLng = location.getLongitude();
+						Marker marker = m_map.addMarker(new MarkerOptions()
+							.position(new LatLng(curLat, curLng)).title(user.getNick())
+							.snippet(user.getPosition().toString()).icon(BitmapDescriptorFactory.fromBitmap(currentAvatar)));
+						 m_mapUserMarker.put(marker, user);
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				
+			}
+			
 			List<KUserInfo> users = new GetFriendsAsyncTask().execute().get();
 			for (KUserInfo user : users) {
 				List<KPosition> positions = new GetPositionAsyncTask(user.getId()).execute().get();
