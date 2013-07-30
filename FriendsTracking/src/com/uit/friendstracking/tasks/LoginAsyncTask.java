@@ -21,14 +21,17 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
 	@Override
 	protected void onPostExecute(Boolean result) {
-		m_progressDialog.dismiss();
+		if (m_context != null) {
+			m_progressDialog.dismiss();
+		}
 		super.onPostExecute(result);
 	}
 
 	@Override
 	protected void onPreExecute() {
-		m_progressDialog = ProgressDialog.show(m_context, "Login",
-				"System is logging to server ...");
+		if (m_context != null) {
+			m_progressDialog = ProgressDialog.show(m_context, "Login", "System is logging to server ...");
+		}
 		super.onPreExecute();
 	}
 
