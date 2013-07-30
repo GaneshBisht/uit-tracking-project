@@ -110,28 +110,40 @@ public class FFLocationAPI {
 		return dbc.saveUser(u);
 	}
 	
-	public boolean changeUser1(Auth a, UserInfo ui, String pw, String photo) {
+	public boolean changeUser1(Auth a,int id, String nick, String name, String surname, String email, int phone, String country, String address,
+			 String pw, String photo) {
+		
 		if (photo.equals("null"))
 			photo = null;
 		Integer uid = Auths.getInstance().getUser(a);
 		if (uid == null)
 			return false;
-		if (uid != ui.getId())
+		if (uid != id)
 			return false;
-		User u = new User(ui);
-		try {
-			if (pw.equals(getHash("")))
-				pw = dbc.loadUser(ui.getId()).getPassword();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+		User u = new User();
+		u.setId(id);
+		u.setNick(nick);
+		u.setName(name);
+		u.setSurname(surname);
+		u.setEmail(email);
+		u.setPhone(phone);
+		u.setCountry(country);
+		u.setAddress(address);
+		u.setAdministrator(false);
 		Photo oPhoto = new Photo();
 		if (photo != null) {
 			oPhoto.setPhoto(Base64.decode(photo));
 			u.setPhoto(oPhoto);
 		}
+		try {
+			if (pw.equals(getHash("")))
+				pw = dbc.loadUser(id).getPassword();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 		u.setPassword(pw);
 		return dbc.saveUser(u);
+
 	}
 
 	/**
