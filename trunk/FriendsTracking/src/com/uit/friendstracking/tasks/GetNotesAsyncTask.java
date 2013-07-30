@@ -11,7 +11,7 @@ import com.uit.friendstracking.webservices.ToServer;
 public class GetNotesAsyncTask extends AsyncTask<Void, Void, List<KNote>> {
 
 	private int m_id;
-	
+
 	public GetNotesAsyncTask(int id) {
 		m_id = id;
 	}

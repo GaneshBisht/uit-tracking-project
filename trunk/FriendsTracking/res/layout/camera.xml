@@ -26,4 +26,10 @@
         android:orientation="vertical" >
     </LinearLayout>
 
+    <CheckBox
+        android:id="@+id/cbPostToWall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Post to wall" />
+
 </LinearLayout>

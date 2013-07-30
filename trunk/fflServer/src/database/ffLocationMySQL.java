@@ -233,7 +233,7 @@ public class ffLocationMySQL implements ffLocationDBIface {
 		try {
 			PreparedStatement selectSentence = null;
 			ResultSet resultSet = null;
-			selectSentence = connection.prepareStatement("SELECT note.ID, Note, IDUser, DateTime, Longitude, Latitude, IDNote IS NOT NULL HasPhoto, Photo "
+			selectSentence = connection.prepareStatement("SELECT note.ID, Note, IDUser, DateTime, Latitude, Longitude, IDNote IS NOT NULL HasPhoto, Photo "
 					+ "FROM note LEFT OUTER JOIN photo ON note.ID=photo.IDNote " + "WHERE IDUser=? " + "GROUP BY note.ID" + " ORDER BY DateTime DESC LIMIT 0,"
 					+ c);
 			selectSentence.setInt(1, id);
@@ -241,7 +241,7 @@ public class ffLocationMySQL implements ffLocationDBIface {
 			ArrayList<Note> nl = new ArrayList<Note>();
 			while (resultSet.next()) {
 				Note n = new Note(resultSet.getInt("ID"), resultSet.getString("Note"), resultSet.getInt("IDUser"), new Position(
-						resultSet.getFloat("Longitude"), resultSet.getFloat("Latitude"), resultSet.getDate("DateTime").toString()),
+						resultSet.getFloat("Latitude"), resultSet.getFloat("Longitude"), resultSet.getDate("DateTime").toString()),
 						resultSet.getBoolean("HasPhoto"));
 				if (n.getHasPhoto()) {
 					Blob b = resultSet.getBlob("Photo");

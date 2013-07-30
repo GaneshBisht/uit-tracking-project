@@ -16,6 +16,11 @@
     <item
         android:id="@+id/exit"
         android:title="Logout"/>
+    <item
+        android:id="@+id/find_route"
+        android:title="Find Route"/>
+    <item
+        android:id="@+id/load_note"
+        android:title="Load Notes"/>
 
-		<item android:id="@+id/find_route" android:title="Find Route" />
 </menu>
