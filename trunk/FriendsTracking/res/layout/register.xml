@@ -2,16 +2,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    
-    <FrameLayout android:id="@+id/camera_preview1"
-		android:layout_height="10dip" android:layout_width="fill_parent">
-	</FrameLayout>
 	
-    <Button
-            android:id="@+id/bt1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="take photo" />
+    
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -178,14 +170,23 @@
             android:text="Image" /> 
          <ImageView
 	    	android:id="@+id/register_Image"
-	        android:layout_width="fill_parent"
-	        android:layout_height="fill_parent"
-	        android:src="@drawable/ic_launcher"
+            android:layout_marginTop="10dp"
+			android:layout_gravity="center_horizontal"
+			android:layout_width="fill_parent" 		 
+			android:layout_height="200dp"
+			android:src="@drawable/ic_launcher"
 	         />
      </LinearLayout>
+     
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
+         
+         <Button
+            android:id="@+id/bt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Take Photo" />
 
         <Button
             android:id="@+id/register_bSave"
