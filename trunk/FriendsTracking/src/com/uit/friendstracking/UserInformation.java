@@ -68,7 +68,7 @@ public class UserInformation extends Activity implements OnClickListener {
 	protected int aspectX = 1;
 	protected int aspectY = 1;
 	protected boolean return_data = false;
-	protected Register thiz;
+	protected UserInformation thiz;
 	protected boolean scale = true;
 	protected boolean faceDetection = true;
 	protected boolean circleCrop = false;
@@ -191,6 +191,7 @@ public class UserInformation extends Activity implements OnClickListener {
 				dialog.show();
 			}
 		});
+		
 
 	};
 
