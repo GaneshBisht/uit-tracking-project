@@ -157,7 +157,7 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 		}
 		try {
 			
-			
+			/*
 			if(user == null)
 			{
 				try {
@@ -196,15 +196,18 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 					// TODO: handle exception
 				}
 				
-			}
+			}*/
 			
 			List<KUserInfo> users = new GetFriendsAsyncTask().execute().get();
 			for (KUserInfo user : users) {
+				byte[] b = user.getPhoto().getPhoto();
+				Bitmap bm = BitmapFactory.decodeByteArray(b, 0, b.length);
+				bm= Bitmap.createScaledBitmap(bm, 70, 90, true);
 				List<KPosition> positions = new GetPositionAsyncTask(user.getId()).execute().get();
 				if (positions != null && positions.size() != 0) {
 					Marker marker = m_map.addMarker(new MarkerOptions()
 							.position(new LatLng(positions.get(0).getLatitudeFloat(), positions.get(0).getLongitudeFloat())).title(user.getNick())
-							.snippet(user.getPosition().toString()).icon(BitmapDescriptorFactory.defaultMarker()));
+							.snippet(user.getPosition().toString()).icon(BitmapDescriptorFactory.fromBitmap(bm)));
 					m_mapUserMarker.put(marker, user);
 				}
 			}

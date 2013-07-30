@@ -20,6 +20,8 @@ import com.uit.friendstracking.models.KPhoto;
 import com.uit.friendstracking.models.KPosition;
 import com.uit.friendstracking.models.KUserInfo;
 
+import controller.Auth;
+
 public class ToServer {
 
 	// Cache live 30 seconds.
@@ -369,17 +371,26 @@ public class ToServer {
 
 	public static boolean changeUser(KUserInfo u, String pw, KPhoto photo) throws Exception {
 
-		pw = getHash(pw);
 
-		if (getAuth() == null)
-			throw new Exception("Not logged");
+		pw = getHash(pw); 
+		
+		if(getAuth()==null) throw new Exception("Not logged");
 		KAuth a = getAuth();
 		String METHOD_NAME = "changeUser1";
-
+		
 		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
+//Auth a,int id, String nick, String name, String surname, String email, int phone, String country, String address,
+
 
 		request.addProperty("a", a);
-		request.addProperty("u", u);
+		request.addProperty("id", u.getId());
+		request.addProperty("nick", u.getNick());
+		request.addProperty("name", u.getName());
+		request.addProperty("surname", u.getSurname());
+		request.addProperty("email", u.getEmail());
+		request.addProperty("phone", u.getPhone());
+		request.addProperty("country", u.getCountry());
+		request.addProperty("address", u.getAddress());
 		request.addProperty("pw", pw);
 		if (photo != null) {
 			request.addProperty("photo", Base64.encodeToString(photo.getPhoto(), Base64.DEFAULT));
@@ -389,20 +400,14 @@ public class ToServer {
 
 		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
 		envelope.setOutputSoapObject(request);
-
 		envelope.addMapping("http://controller", "KAuth", KAuth.class);
-		envelope.addMapping("http://controller", "KUserInfo", KUserInfo.class);
-		envelope.addMapping("http://controller", "KPhoto", KPhoto.class);
-		envelope.addMapping("http://controller", "KPosition", KPosition.class);
 
 		HttpTransportSE transport = new HttpTransportSE(URL);
-
-		//envelope.addMapping("http://controller", "Auth", new KAuth().getClass());
 
 		transport.call(SOAP_ACTION, envelope);
 
 		myUser = null;
-
+		
 		return Boolean.parseBoolean(envelope.getResponse().toString());
 
 		/*
