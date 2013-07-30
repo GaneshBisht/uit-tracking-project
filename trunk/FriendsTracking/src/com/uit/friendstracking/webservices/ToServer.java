@@ -174,6 +174,7 @@ public class ToServer {
 			envelope.addMapping("http://model", "UserInfo", new KUserInfo().getClass());
 
 			envelope.addMapping("http://model", "Position", new KPosition().getClass());
+			envelope.addMapping("http://model", "Photo", new KPhoto().getClass());
 
 			HttpTransportSE transport = new HttpTransportSE(URL);
 			transport.call(SOAP_ACTION, envelope);
@@ -350,7 +351,7 @@ public class ToServer {
 
 		envelope.addMapping("http://controller", "KAuth", KAuth.class);
 		envelope.addMapping("http://controller", "KUserInfo", KUserInfo.class);
-
+		envelope.addMapping("http://controller", "KPhoto", KPhoto.class);
 		envelope.addMapping("http://controller", "KPosition", KPosition.class);
 
 		HttpTransportSE transport = new HttpTransportSE(URL);
@@ -361,6 +362,77 @@ public class ToServer {
 
 		myUser = null;
 
+		return Boolean.parseBoolean(envelope.getResponse().toString());
+
+	}
+	public static boolean changeUser(KUserInfo u, String pw,Photo photo) throws Exception {
+
+
+		/*
+		pw = getHash(pw); 
+		
+		if(getAuth()==null) throw new Exception("Not logged");
+		KAuth a = getAuth();
+		String METHOD_NAME = "changeUser1";
+		
+		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
+
+		request.addProperty("a", a);
+		request.addProperty("u", u);
+		request.addProperty("pw", pw);
+		if (photo != null) {
+			request.addProperty("photo", Base64.encodeToString(photo.getPhoto(), Base64.DEFAULT));
+		} else {
+			request.addProperty("photo", "null");
+		}
+
+		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
+				SoapEnvelope.VER11);
+		envelope.setOutputSoapObject(request);
+
+		envelope.addMapping("http://controller", "KAuth", KAuth.class);
+		envelope.addMapping("http://controller", "KUserInfo", KUserInfo.class);
+		envelope.addMapping("http://controller", "KPosition", KPosition.class);
+		
+		HttpTransportSE transport = new HttpTransportSE(URL);
+
+		envelope.addMapping("http://controller", "Auth", new KAuth().getClass());
+
+		transport.call(SOAP_ACTION, envelope);
+
+		myUser = null;
+		
+		return Boolean.parseBoolean(envelope.getResponse().toString());
+		*/
+		pw = getHash(pw); 
+		
+		if(getAuth()==null) throw new Exception("Not logged");
+		KAuth a = getAuth();
+		String METHOD_NAME = "changeUser";
+		
+		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
+
+		request.addProperty("a", a);
+		request.addProperty("u", u);
+		request.addProperty("pw", pw);
+
+		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
+				SoapEnvelope.VER11);
+		envelope.setOutputSoapObject(request);
+
+		envelope.addMapping("http://controller", "KAuth", KAuth.class);
+		envelope.addMapping("http://controller", "KUserInfo", KUserInfo.class);
+		envelope.addMapping("http://controller", "KPhoto", KPhoto.class);
+		envelope.addMapping("http://controller", "KPosition", KPosition.class);
+		
+		HttpTransportSE transport = new HttpTransportSE(URL);
+
+		envelope.addMapping("http://controller", "Auth", new KAuth().getClass());
+
+		transport.call(SOAP_ACTION, envelope);
+
+		myUser = null;
+		
 		return Boolean.parseBoolean(envelope.getResponse().toString());
 
 	}
@@ -450,6 +522,8 @@ public class ToServer {
 
 		envelope.addMapping("http://model", "UserInfo", new KUserInfo().getClass());
 
+		envelope.addMapping("http://model", "Photo", new KPhoto().getClass());
+		
 		HttpTransportSE transport = new HttpTransportSE(URL);
 		transport.call(SOAP_ACTION, envelope);
 		System.out.println(envelope.bodyIn.getClass());
