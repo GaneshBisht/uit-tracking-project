@@ -18,5 +18,6 @@ public class SUserInfo extends UserInfo{
 		setAddress(ui.getAddress());
 		setAdministrator(ui.isAdministrator());
 		setPosition(ui.getPosition());
+		setPhoto(ui.getPhoto());
 	}
 }

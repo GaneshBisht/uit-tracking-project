@@ -31,7 +31,7 @@ public class ffLocationMySQL implements ffLocationDBIface {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			String url = "jdbc:mysql://localhost:3306/fflocation";
-			connection = DriverManager.getConnection(url, "root", "mysql");
+			connection = DriverManager.getConnection(url, "root", "admin");
 			connection.setAutoCommit(true);
 		} catch (SQLException anException) {
 			while (anException != null) {
