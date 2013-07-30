@@ -72,7 +72,7 @@ public class FFLocationAPI {
 	 * @return the user information or null if wrong authentication
 	 */
 	public UserInfo myUser(Auth a) {
-		Integer uid = Auths.getInstance().getUser(a);
+   		Integer uid = Auths.getInstance().getUser(a);
 		if (uid == null)
 			return null;
 		UserInfo user = dbc.loadUser(uid);
@@ -105,6 +105,30 @@ public class FFLocationAPI {
 				pw = dbc.loadUser(ui.getId()).getPassword();
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
+		}
+		u.setPassword(pw);
+		return dbc.saveUser(u);
+	}
+	
+	public boolean changeUser1(Auth a, UserInfo ui, String pw, String photo) {
+		if (photo.equals("null"))
+			photo = null;
+		Integer uid = Auths.getInstance().getUser(a);
+		if (uid == null)
+			return false;
+		if (uid != ui.getId())
+			return false;
+		User u = new User(ui);
+		try {
+			if (pw.equals(getHash("")))
+				pw = dbc.loadUser(ui.getId()).getPassword();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		Photo oPhoto = new Photo();
+		if (photo != null) {
+			oPhoto.setPhoto(Base64.decode(photo));
+			u.setPhoto(oPhoto);
 		}
 		u.setPassword(pw);
 		return dbc.saveUser(u);
