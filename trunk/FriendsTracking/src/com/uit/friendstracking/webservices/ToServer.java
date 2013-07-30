@@ -259,7 +259,7 @@ public class ToServer {
 			envelope.addMapping("http://controller", "KAuth", KAuth.class);
 
 			envelope.addMapping("http://model", "UserInfo", new KUserInfo().getClass());
-
+			envelope.addMapping("http://model", "Photo", new KPhoto().getClass());
 			envelope.addMapping("http://model", "Position", new KPosition().getClass());
 
 			HttpTransportSE transport = new HttpTransportSE(URL);
