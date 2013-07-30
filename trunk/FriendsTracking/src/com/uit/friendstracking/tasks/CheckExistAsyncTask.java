@@ -19,14 +19,17 @@ public class CheckExistAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
 	@Override
 	protected void onPostExecute(Boolean result) {
-		m_progressDialog.dismiss();
+		if (m_context != null) {
+			m_progressDialog.dismiss();
+		}
 		super.onPostExecute(result);
 	}
 
 	@Override
 	protected void onPreExecute() {
-		m_progressDialog = ProgressDialog.show(m_context, "Check Exist",
-				"System is checking exist ...");
+		if (m_context != null) {
+			m_progressDialog = ProgressDialog.show(m_context, "Check Exist", "System is checking exist ...");
+		}
 		super.onPreExecute();
 	}
 

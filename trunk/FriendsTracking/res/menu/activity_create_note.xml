@@ -3,13 +3,23 @@
 
     <item
         android:id="@+id/takePhoto"
-        android:showAsAction="always"
-        android:title="@string/takePhoto">
+        android:icon="@drawable/camera"
+        android:showAsAction="always">
+    </item>
+    <item
+        android:id="@+id/pickFriend"
+        android:icon="@drawable/friends"
+        android:showAsAction="always">
+    </item>
+    <item
+        android:id="@+id/pickPlace"
+        android:icon="@drawable/place"
+        android:showAsAction="always">
     </item>
     <item
         android:id="@+id/save"
-        android:showAsAction="always"
-        android:title="@string/save">
+        android:icon="@drawable/save"
+        android:showAsAction="always">
     </item>
 
 </menu>

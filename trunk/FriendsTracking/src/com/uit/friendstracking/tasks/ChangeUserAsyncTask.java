@@ -1,14 +1,12 @@
 package com.uit.friendstracking.tasks;
 
-import model.Photo;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.uit.friendstracking.models.KPhoto;
 import com.uit.friendstracking.models.KUserInfo;
 import com.uit.friendstracking.webservices.ToServer;
-
-import controller.Auth;
 
 public class ChangeUserAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -16,9 +14,9 @@ public class ChangeUserAsyncTask extends AsyncTask<Void, Void, Boolean> {
 	private ProgressDialog m_progressDialog;
 	private KUserInfo m_user;
 	private String m_passWord;
-	private Photo m_photo;
+	private KPhoto m_photo;
 
-	public ChangeUserAsyncTask(Context context, KUserInfo user, String passWord,Photo photo) {
+	public ChangeUserAsyncTask(Context context, KUserInfo user, String passWord, KPhoto photo) {
 		m_context = context;
 		m_user = user;
 		m_passWord = passWord;
@@ -33,8 +31,7 @@ public class ChangeUserAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
 	@Override
 	protected void onPreExecute() {
-		m_progressDialog = ProgressDialog.show(m_context, "New User",
-				"System is adding user ...");
+		m_progressDialog = ProgressDialog.show(m_context, "New User", "System is adding user ...");
 		super.onPreExecute();
 	}
 

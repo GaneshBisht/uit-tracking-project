@@ -21,7 +21,13 @@
     <string name="str_rb_bicycling">Bicycling</string>
     <string name="str_rb_walking">Walking</string>
     <string name="str_btn_draw">Draw Route</string>
+    <string name="app_id">141712532702607</string>
 	<string name="str_tv_From">Fr</string>
 	<string name="str_tv_To">To</string>
 	<string name="str_btnOK">OK</string>
+	<string name="no_location_error">Could not obtain your current location</string>
+	<string name="exception">Exception: %1$s</string>
+	<string name="error_dialog_title">Something Went Wrong</string>
+	<string name="error_dialog_button_text">OK</string>
+	
 </resources>

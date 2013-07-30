@@ -42,6 +42,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.Session;
+import com.facebook.android.Facebook;
+import com.facebook.android.Util;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -290,6 +293,7 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 
 		case R.id.exit:
 			ToServer.logout();
+			Session.getActiveSession().closeAndClearTokenInformation();
 			this.finish();
 			return true;
 

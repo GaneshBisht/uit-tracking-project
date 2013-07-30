@@ -4,6 +4,7 @@ import model.Photo;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.uit.friendstracking.webservices.ToServer;
 
@@ -28,6 +29,11 @@ public class SetNoteAsyncTask extends AsyncTask<Void, Void, Boolean> {
 	protected void onPostExecute(Boolean result) {
 		super.onPostExecute(result);
 		m_progressDialog.dismiss();
+		if (result) {
+			Toast.makeText(m_context, "The photo has been saved sucesfully.", Toast.LENGTH_LONG).show();
+		} else {
+			Toast.makeText(m_context, "Sorry, but the photo was not saved correctly.", Toast.LENGTH_LONG).show();
+		}
 	}
 
 	@Override

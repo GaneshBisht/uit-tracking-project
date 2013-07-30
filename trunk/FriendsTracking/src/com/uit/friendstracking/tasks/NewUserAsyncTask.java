@@ -16,7 +16,7 @@ public class NewUserAsyncTask extends AsyncTask<Void, Void, Boolean> {
 	private String m_passWord;
 	private Photo m_photo;
 
-	public NewUserAsyncTask(Context context, KUserInfo user, String passWord,Photo photo) {
+	public NewUserAsyncTask(Context context, KUserInfo user, String passWord, Photo photo) {
 		m_context = context;
 		m_user = user;
 		m_passWord = passWord;
@@ -25,14 +25,17 @@ public class NewUserAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
 	@Override
 	protected void onPostExecute(Boolean result) {
-		m_progressDialog.dismiss();
+		if (m_context != null) {
+			m_progressDialog.dismiss();
+		}
 		super.onPostExecute(result);
 	}
 
 	@Override
 	protected void onPreExecute() {
-		m_progressDialog = ProgressDialog.show(m_context, "New User",
-				"System is adding user ...");
+		if (m_context != null) {
+			m_progressDialog = ProgressDialog.show(m_context, "New User", "System is adding user ...");
+		}
 		super.onPreExecute();
 	}
 
