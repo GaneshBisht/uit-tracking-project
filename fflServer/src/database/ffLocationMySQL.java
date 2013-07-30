@@ -31,7 +31,7 @@ public class ffLocationMySQL implements ffLocationDBIface {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			String url = "jdbc:mysql://localhost:3306/fflocation";
-			connection = DriverManager.getConnection(url, "root", "admin");
+			connection = DriverManager.getConnection(url, "root", "mysql");
 			connection.setAutoCommit(true);
 		} catch (SQLException anException) {
 			while (anException != null) {
@@ -115,12 +115,11 @@ public class ffLocationMySQL implements ffLocationDBIface {
 			resultSet = selectSentence.executeQuery();
 			if (!resultSet.next())
 				return null;
-			User current = new User(resultSet.getInt("ID"), resultSet.getString("Nick"), resultSet.getString("Password"), resultSet.getString("Name"),
-					resultSet.getString("Surname"), resultSet.getString("Email"), resultSet.getInt("Phone"), resultSet.getString("Country"),
-					resultSet.getString("Address"), resultSet.getBoolean("Administrator"));
 			Blob b = resultSet.getBlob("Photo");
 			byte[] bs = b.getBytes(1, (int) b.length());
-			current.setPhoto(new Photo(bs));
+			User current = new User(resultSet.getInt("ID"), resultSet.getString("Nick"), resultSet.getString("Password"), resultSet.getString("Name"),
+					resultSet.getString("Surname"), resultSet.getString("Email"), resultSet.getInt("Phone"), resultSet.getString("Country"),
+					resultSet.getString("Address"), resultSet.getBoolean("Administrator"), new Photo(bs));
 			return current;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -134,15 +133,17 @@ public class ffLocationMySQL implements ffLocationDBIface {
 			PreparedStatement selectSentence = null;
 			ResultSet resultSet = null;
 			selectSentence = connection
-					.prepareStatement("SELECT `ID` , `Nick` , `Password` , `Name` , `Surname` , `Email` , `Phone` , `Country` , `Address` , `Administrator`"
+					.prepareStatement("SELECT `ID` , `Nick` , `Password` , `Name` , `Surname` , `Email` , `Phone` , `Country` , `Address` , `Administrator`, `Photo`"
 							+ "FROM `user`" + "WHERE Nick LIKE ?");
 			selectSentence.setString(1, nick);
 			resultSet = selectSentence.executeQuery();
 			if (!resultSet.next())
 				return null;
+			Blob b = resultSet.getBlob("Photo");
+			byte[] bs = b.getBytes(1, (int) b.length());
 			return new User(resultSet.getInt("ID"), resultSet.getString("Nick"), resultSet.getString("Password"), resultSet.getString("Name"),
 					resultSet.getString("Surname"), resultSet.getString("Email"), resultSet.getInt("Phone"), resultSet.getString("Country"),
-					resultSet.getString("Address"), resultSet.getBoolean("Administrator"));
+					resultSet.getString("Address"), resultSet.getBoolean("Administrator"), new Photo(bs));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
