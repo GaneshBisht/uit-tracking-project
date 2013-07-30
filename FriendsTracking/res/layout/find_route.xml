@@ -1,0 +1,68 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/twToLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_tv_To" />
+
+        <Spinner
+            android:id="@+id/spTo"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:inputType="text"
+            android:ems="10" />
+        <Button
+            android:id="@+id/find_btnSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/btnOk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/str_btnOK" />
+    </LinearLayout>
+    
+    <RadioGroup
+        android:id="@+id/rg_modes" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+
+        android:orientation="horizontal">
+        
+        <RadioButton android:id="@+id/rb_driving"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:text="@string/str_rb_driving"
+            android:checked="true" />
+        
+        <RadioButton android:id="@+id/rb_bicycling"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="@string/str_rb_bicycling" />
+        
+        <RadioButton android:id="@+id/rb_walking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="@string/str_rb_walking" />
+        
+        
+    </RadioGroup>
+
+</LinearLayout>
