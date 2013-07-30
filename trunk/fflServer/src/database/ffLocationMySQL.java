@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.sql.rowset.serial.SerialBlob;
+
+import android.R.string;
+
 import model.Note;
 import model.Photo;
 import model.Position;
@@ -31,7 +35,7 @@ public class ffLocationMySQL implements ffLocationDBIface {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			String url = "jdbc:mysql://localhost:3306/fflocation";
-			connection = DriverManager.getConnection(url, "root", "mysql");
+			connection = DriverManager.getConnection(url, "root", "admin");
 			connection.setAutoCommit(true);
 		} catch (SQLException anException) {
 			while (anException != null) {
@@ -78,24 +82,52 @@ public class ffLocationMySQL implements ffLocationDBIface {
 
 	@Override
 	public boolean saveUser(User us) {
+		PreparedStatement insertSentence = null;
+		PreparedStatement selectSentence = null;
+		PreparedStatement selectSentence2 = null;
 		PreparedStatement updateSentence = null;
+		ResultSet resultSet = null;
 		try {
-			updateSentence = connection.prepareStatement("UPDATE `fflocation`.`user` SET" + "`Nick` = ?, " + "`Password` = ?, " + "`Name` = ?, "
-					+ "`Surname` = ?, " + "`Email` = ?, " + "`Phone` = ?, " + "`Country` = ?, " + "`Address` = ?, " + "`Administrator` = ? " + "`Photo` = ? "
-					+ "WHERE `user`.`ID` =?;");
-			updateSentence.setString(1, us.getNick());
-			updateSentence.setString(2, us.getPassword());
-			updateSentence.setString(3, us.getName());
-			updateSentence.setString(4, us.getSurname());
-			updateSentence.setString(5, us.getEmail());
-			updateSentence.setInt(6, us.getPhone());
-			updateSentence.setString(7, us.getCountry());
-			updateSentence.setString(8, us.getAddress());
-			updateSentence.setBoolean(9, us.isAdministrator());
-			updateSentence.setInt(10, us.getId());
+			insertSentence = connection.prepareStatement("INSERT INTO `fflocation`.`user` " + "(`ID`, `Nick`, `Password`, `Name`, `Surname`, `Email`, "
+					+ "`Phone`, `Country`, `Address`, `Administrator`,`Photo`) " + "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);");
+			insertSentence.setString(1, us.getNick()+System.currentTimeMillis());
+			insertSentence.setString(2, us.getPassword());
+			insertSentence.setString(3, us.getName());
+			insertSentence.setString(4, us.getSurname());
+			insertSentence.setString(5, us.getEmail());
+			insertSentence.setInt(6, us.getPhone());
+			insertSentence.setString(7, us.getCountry());
+			insertSentence.setString(8, us.getAddress());
+			insertSentence.setBoolean(9, us.isAdministrator());
 			Photo avatar = us.getPhoto();
-			updateSentence.setBlob(11, new ByteArrayInputStream(avatar.getPhoto()));
-			updateSentence.executeUpdate();
+			insertSentence.setBlob(10, new ByteArrayInputStream(avatar.getPhoto()));
+			insertSentence.executeUpdate();
+
+			selectSentence = connection.prepareStatement("SELECT LAST_INSERT_ID()");
+			resultSet = selectSentence.executeQuery();
+			int newid = 0;
+			if (resultSet.next())
+			{
+				newid = resultSet.getInt(1);
+			}
+			if(newid!= 0)
+			{
+				selectSentence2 = connection.prepareStatement("UPDATE `fflocation`.`user` AS a   INNER JOIN `fflocation`.`user` AS b ON b.`ID` = "+newid+" and a.`ID` = "+us.getId()+"  SET a.`Photo` = b.`Photo`	");
+				selectSentence2.executeUpdate();
+				updateSentence = connection.prepareStatement("UPDATE `fflocation`.`user` SET" + "`Nick` = ?, " + "`Password` = ?, " + "`Name` = ?, "
+						+ "`Surname` = ?, " + "`Email` = ?, " + "`Phone` = ?, " + "`Country` = ?, " + "`Address` = ?, " + "`Administrator` = ? " +" WHERE `user`.`ID` =?;");
+				updateSentence.setString(1, us.getNick());
+				updateSentence.setString(2, us.getPassword());
+				updateSentence.setString(3, us.getName());
+				updateSentence.setString(4, us.getSurname());
+				updateSentence.setString(5, us.getEmail());
+				updateSentence.setInt(6, us.getPhone());
+				updateSentence.setString(7, us.getCountry());
+				updateSentence.setString(8, us.getAddress());
+				updateSentence.setBoolean(9, us.isAdministrator());
+				updateSentence.setInt(10, us.getId());
+				updateSentence.executeUpdate();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
