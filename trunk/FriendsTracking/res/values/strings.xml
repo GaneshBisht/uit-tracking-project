@@ -3,7 +3,7 @@
 
     <string name="app_name">FriendsTracking</string>
     <string name="action_settings">Settings</string>
-    <string name="IP">118.68.239.2</string>
+    <string name="IP">192.168.43.64</string>
     <string name="loading_title">Loading…</string>
     <string name="loading_message">Loading… Please wait</string>
     <string name="find_friend">Find a friend</string>
