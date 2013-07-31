@@ -133,6 +133,7 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 		m_lastUpdateFriends = currentTime;
 		for (Marker marker : m_mapUserMarker.keySet()) {
 			marker.remove();
+			m_mapUserMarker.remove(marker);
 		}
 		try {
 			
@@ -261,6 +262,13 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 		m_map.getUiSettings().setMyLocationButtonEnabled(true);
 		setUpCamera();
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		m_mapUserMarker.clear();
+		m_mapNoteMarker.clear();
+	}
 
 	@Override
 	protected void onPause() {
@@ -294,26 +302,7 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 
 	@Override
 	public boolean onMarkerClick(Marker arg0) {
-		if (m_mapUserMarker.containsKey(arg0)) {
-			for (Marker marker : m_mapUserMarker.keySet()) {
-				marker.remove();
-			}
-			double gradesPerPixel = getGradesPerPixel();
-
-			// Calculate the grades which the icon on the map.
-			float rate = (float) (photoIcon.getHeight() * gradesPerPixel);
-			try {
-				List<KNote> listNotes = new GetNotesAsyncTask(m_mapUserMarker.get(arg0).getId()).execute().get();
-				if (listNotes.size() > 0) {
-					clasifyNotes(rate, listNotes);
-					drawNotesMarker(groups);
-				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}
-		} else if (m_mapNoteMarker.containsKey(arg0)) {
+		if (m_mapNoteMarker.containsKey(arg0)) {
 			Intent newIntent = new Intent(this, PhotoGallery.class);
 			PhotoGallery.selectedGroup = m_mapNoteMarker.get(arg0);
 			List<KNote> listNotes = new ArrayList<KNote>();
@@ -366,7 +355,10 @@ public class Map extends FragmentActivity implements OnMarkerClickListener {
 	}
 
 	private void drawNotesMarker(Groups grps) {
-
+		for (Marker marker : m_mapNoteMarker.keySet()) {
+			marker.remove();
+			m_mapNoteMarker.remove(marker);
+		}
 		Iterator<Group> it = grps.iterator();
 
 		while (it.hasNext()) {
