@@ -1,7 +1,6 @@
 package com.uit.friendstracking;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import android.app.Activity;
@@ -18,12 +17,10 @@ import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.uit.friendstracking.models.Group;
 import com.uit.friendstracking.models.KNote;
 import com.uit.friendstracking.models.KPhoto;
-import com.uit.friendstracking.tasks.GetNoteAsyncTask;
 
 public class PhotoGallery extends Activity {
 
@@ -88,75 +85,6 @@ public class PhotoGallery extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.loadphoto:
-			try {
-				// Read the notes
-
-				Iterator<KNote> it = selectedGroup.iterator();
-				listNotes = new ArrayList<KNote>();
-
-				// For each note
-				while (it.hasNext()) {
-					// Add the note to the list
-					KNote note = (KNote) it.next();
-					KNote kNote = new GetNoteAsyncTask(note.getId()).execute().get();
-					if (kNote != null) {
-						listNotes.add(kNote);
-					}
-
-				}
-
-				// If there is one note or more
-				if (listNotes.size() > 0) {
-
-					// if the note has photo
-					if (listNotes.get(0).getHasPhoto()) {
-
-						// Fit the first image to the viewer
-						image.setImageDrawable(((KPhoto) listNotes.get(0).getPhoto()).getBitMap());
-						et_comment.setText(listNotes.get(0).getNote());
-
-					} else {
-						// If the note do not have photo show the message
-						et_comment.setText(listNotes.get(0).getNote());
-					}
-				}
-
-			} catch (Exception e) {
-				Toast.makeText(getApplicationContext(), "Failed while trying to read photos: " + e.getMessage(), Toast.LENGTH_LONG).show();
-
-				listNotes.clear();
-				this.finish();
-			}
-
-			myGallery = (Gallery) findViewById(R.id.photoGallery);
-			myGallery.setAdapter(new ImageAdapter(this));
-
-			// Know when the user click in the gallery
-			myGallery.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-				@Override
-				public void onItemSelected(AdapterView parent, View v, int position, long id) {
-
-					// If the note have image
-					if (listNotes.get(position).getHasPhoto()) {
-						// Show the image and the comment
-						image.setImageDrawable(((KPhoto) listNotes.get(position).getPhoto()).getBitMap());
-						et_comment.setText(listNotes.get(position).getNote());
-					} else {
-						// Show the comment
-						image.setImageBitmap(null);
-						et_comment.setText(listNotes.get(position).getNote());
-					}
-
-				}
-
-				@Override
-				public void onNothingSelected(AdapterView arg0) {
-
-				}
-			});
-			break;
 
 		default:
 			break;
