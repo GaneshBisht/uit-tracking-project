@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
@@ -17,6 +18,9 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,12 +35,16 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.uit.friendstracking.camera.CameraPreview;
 import com.uit.friendstracking.imagesupport.CropOption;
 import com.uit.friendstracking.imagesupport.CropOptionAdapter;
 import com.uit.friendstracking.models.KPhoto;
 import com.uit.friendstracking.models.KUserInfo;
 import com.uit.friendstracking.tasks.CheckExistAsyncTask;
+import com.uit.friendstracking.tasks.LogPositionAsyncTask;
+import com.uit.friendstracking.tasks.LoginAsyncTask;
 import com.uit.friendstracking.tasks.NewUserAsyncTask;
 
 public class Register extends Activity implements OnClickListener {
@@ -365,6 +373,17 @@ public class Register extends Activity implements OnClickListener {
 								userInfo, password, photo).execute().get();
 
 						if (succesfully) {
+							LocationManager	m_locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+							Criteria criteria = new Criteria();
+							criteria.setAccuracy(Criteria.ACCURACY_FINE);
+							String m_provider = m_locationManager.getBestProvider(criteria, true);
+							Location location = m_locationManager.getLastKnownLocation(m_provider);
+							if (location != null) {
+								double curLat = location.getLatitude();
+								double curLng = location.getLongitude();
+								new LoginAsyncTask(this, nick, password).execute();
+								new LogPositionAsyncTask(Float.parseFloat("" + curLng), Float.parseFloat("" + curLat)).execute();
+							}
 							Toast.makeText(getApplicationContext(),
 									"The user has been saved.",
 									Toast.LENGTH_LONG).show();
