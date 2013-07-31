@@ -14,6 +14,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.uit.friendstracking.models.KPosition;
 import com.uit.friendstracking.models.KUserInfo;
 import com.uit.friendstracking.tasks.GetFriendsAsyncTask;
+import com.uit.friendstracking.tasks.GetMyUserAsyncTask;
 import com.uit.friendstracking.tasks.GetPositionAsyncTask;
 import com.uit.friendstracking.tasks.SearchAsyncTask;
 import com.uit.friendstracking.webservices.ToServer;
@@ -35,6 +36,8 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -48,6 +51,11 @@ public class FindRoute extends Activity implements OnClickListener {
 	String[] listItems;
 	int[] listIds;
 	ArrayList<Friend> arrFriend;
+	RadioButton rbDriving;
+	RadioButton rbBiCycling;
+	RadioButton rbWalking;
+	RadioGroup rgModes;
+	int mode = 0;
 
 	private class Friend {
 		/*
@@ -154,6 +162,18 @@ public class FindRoute extends Activity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.find_route);
+
+		// Getting reference to rb_driving
+		rbDriving = (RadioButton) findViewById(R.id.rb_driving);
+
+		// Getting reference to rb_bicylcing
+		rbBiCycling = (RadioButton) findViewById(R.id.rb_bicycling);
+
+		// Getting reference to rb_walking
+		rbWalking = (RadioButton) findViewById(R.id.rb_walking);
+
+		// Getting Reference to rg_modes
+		rgModes = (RadioGroup) findViewById(R.id.rg_modes);
 		
 		ToFriend = (Spinner) findViewById(R.id.spTo);
 
@@ -201,7 +221,7 @@ public class FindRoute extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		LocationManager locationManager;
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
+		
 		Criteria criteria = new Criteria();
 		criteria.setAccuracy(Criteria.ACCURACY_FINE);
 		criteria.setAltitudeRequired(false);
@@ -212,6 +232,17 @@ public class FindRoute extends Activity implements OnClickListener {
 		String provider = locationManager.getBestProvider(criteria, true);
 
 		Location location = locationManager.getLastKnownLocation(provider);
+		String myPosition = null;
+		try {
+			KUserInfo myUser = new GetMyUserAsyncTask().execute().get();
+			myPosition = myUser.getPosition().getLatitude() + "," + myUser.getPosition().getLongitude();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// TODO Auto-generated method stub
 		Button sourceButton = (Button) v;
 
@@ -219,12 +250,31 @@ public class FindRoute extends Activity implements OnClickListener {
 			int indexSelected = ToFriend.getSelectedItemPosition();
 			final Intent intent = new Intent(Intent.ACTION_VIEW,
 					Uri.parse("http://maps.google.com/maps?" + "saddr="
-							+ location.getLatitude() + "," + location.getLongitude() + "&daddr="
+							+ myPosition + "&daddr="
 							+ arrFriend.get(indexSelected).locations));
 			intent.setClassName("com.google.android.apps.maps",
 					"com.google.android.maps.MapsActivity");
 			startActivity(intent);
+		}else if(sourceButton == btnSearch){
+			/*
+			final Intent intentMap = new Intent(FindRoute.this, Map.class);
+			Bundle b = new Bundle();
+			b.putDouble("originLat", location.getLatitude());
+			b.putDouble("originLng", location.getLongitude());
+			int selectedIndex = ToFriend.getSelectedItemPosition();
+			b.putString("destLat", arrFriend.get(selectedIndex).locations);
+			if(rbDriving.isChecked()){
+				mode = 0;
+			}else if(rbBiCycling.isChecked()){
+				mode = 1;
+			}else if(rbWalking.isChecked()){
+				mode = 2;
+			}
+			b.putInt("mode", mode);
+			intentMap.putExtras(b);
+			startActivity(intentMap);
+			finish();
+			*/
 		}
 	}
-
 }
